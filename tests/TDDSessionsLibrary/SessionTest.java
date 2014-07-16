@@ -5,7 +5,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +38,7 @@ public class SessionTest {
     public void testParametersConstructor() throws Exception {
         File file1 = temp.newFile();
         File file2 = temp.newFile();
-        assertTrue(new Session(file1.getName(), file2.getName()) instanceof Session);
+        assertTrue(new Session(file1.getPath(), file2.getPath()) instanceof Session);
     }
 
     @Test
@@ -48,8 +50,8 @@ public class SessionTest {
     @Test
     public void testAddCycle() throws Exception {
         Session session = new Session();
-        List<Event> events = new ArrayList<Event>();
-        List<Phase> phases = new ArrayList<Phase>();
+        List<String> events = new ArrayList<String>();
+        List<String> phases = new ArrayList<String>();
 
         session.addCycle(events, phases);
         assertEquals(1, session.size());
@@ -58,8 +60,8 @@ public class SessionTest {
     @Test
     public void testGetCycle() throws Exception {
         Session session = new Session();
-        List<Event> events = new ArrayList<Event>();
-        List<Phase> phases = new ArrayList<Phase>();
+        List<String> events = new ArrayList<String>();
+        List<String> phases = new ArrayList<String>();
 
         session.addCycle(events, phases);
         assertTrue(session.getCycle(0) instanceof Cycle);

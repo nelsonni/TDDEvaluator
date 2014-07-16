@@ -28,9 +28,9 @@ public class Session {
         cycles = new ArrayList<Cycle>();
         eventsFile = Paths.get(eventFileName).getFileName().toString();
         cyclesFile = Paths.get(cycleFileName).getFileName().toString();
-
-        parseJSONEvents(eventFileName);
-        parseJSONCycles(cycleFileName);
+        List<String> eventContent = getFileContentsList(eventFileName);
+        List<String> cycleContent = getFileContentsList(cycleFileName);
+        addCycle(eventContent, cycleContent);
     }
 
     public int size() {
@@ -41,58 +41,17 @@ public class Session {
         return cycles.get(index);
     }
 
-    public boolean addCycle(List<Event> cycleEvents, List<Phase> cyclePhases) {
-        return cycles.add(new Cycle(cycleEvents, cyclePhases));
+    public boolean addCycle(List<String> cycleEvents, List<String> cyclePhases) {
+        boolean result = cycles.add(new Cycle(cycleEvents, cyclePhases));
+        return result;
     }
 
-    private void parseJSONEvents(String fileName) {
-        //JSONArray allJArray = new JSONArray();
-        //List<String> fileContents = getFileContentsList(fileName);
-
-        /*
-        for (String line : fileContents) {
-            allJArray.addAll(parseJSONString(line));
-        }*/
-
-        //return allJArray;
-    }
-
-    private void parseJSONCycles(String fileName) {
-
-    }
-
-
-
-
-
-
-
-    /*
-    private JSONArray mapEvents(JSONArray events) {
-        for (int i = 0; i < events.size(); i++) {
-            JSONObject jObj = (JSONObject) events.get(i);
-            String cycleType = TDDCycleRanges.get(i);
-
-            if (cycleType == null) {
-                jObj.put("TDDCycle", "null");
-            }
-            else {
-                jObj.put("TDDCycle", cycleType);
-            }
-        }
-        return events;
-    }
-    */
-
-
-
-
-    private List<String> getFileContentsList(String fileName) {
-        Path filePath = Paths.get(fileName);
+    private List<String> getFileContentsList(String filePath) {
+        Path path = Paths.get(filePath);
         List<String> allLines = null;
 
         try {
-            allLines = Files.readAllLines(filePath, Charset.defaultCharset());
+            allLines = Files.readAllLines(path, Charset.defaultCharset());
         } catch (IOException e) {
             e.printStackTrace();
         }
