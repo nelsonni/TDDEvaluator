@@ -14,9 +14,6 @@ public class Event {
     private JSONObject operationEvent;
 
     public Event(String jString) {
-        System.out.println("Event::Event(String jString)");
-        System.out.println("jString: " + jString);
-
         operationEvent = parseJSONString(jString);
     }
 
@@ -24,9 +21,8 @@ public class Event {
         return operationEvent.toString();
     }
 
-    protected JSONObject parseJSONString(String jsonString) {
+    protected static JSONObject parseJSONString(String jsonString) {
         JSONParser parser = new JSONParser();
-        JSONArray jArray;
         JSONObject jObj = null;
 
         try {

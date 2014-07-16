@@ -29,16 +29,14 @@ public class SessionTest {
 
     @Test
     public void testDefaultConstructor() throws Exception {
-        Session session = new Session();
-        assertTrue(session instanceof Session);
+        assertTrue(new Session() instanceof Session);
     }
 
     @Test
     public void testParametersConstructor() throws Exception {
         File file1 = temp.newFile();
         File file2 = temp.newFile();
-        Session session = new Session(file1.getName(), file2.getName());
-        assertTrue(session instanceof Session);
+        assertTrue(new Session(file1.getName(), file2.getName()) instanceof Session);
     }
 
     @Test

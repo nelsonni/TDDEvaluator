@@ -29,8 +29,8 @@ public class Session {
         eventsFile = Paths.get(eventFileName).getFileName().toString();
         cyclesFile = Paths.get(cycleFileName).getFileName().toString();
 
-        //parseJSONEvents(eventFileName);
-        //parseJSONCycles(cycleFileName);
+        parseJSONEvents(eventFileName);
+        parseJSONCycles(cycleFileName);
     }
 
     public int size() {
@@ -45,14 +45,9 @@ public class Session {
         return cycles.add(new Cycle(cycleEvents, cyclePhases));
     }
 
-
-
-
-
-
     private void parseJSONEvents(String fileName) {
-        JSONArray allJArray = new JSONArray();
-        List<String> fileContents = getFileContentsList(fileName);
+        //JSONArray allJArray = new JSONArray();
+        //List<String> fileContents = getFileContentsList(fileName);
 
         /*
         for (String line : fileContents) {
