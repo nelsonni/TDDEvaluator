@@ -12,17 +12,14 @@ public class Cycle {
     private List<Event> events;
     private List<Phase> phases;
 
-    public Cycle() {
-        events = new ArrayList<Event>();
-        phases = new ArrayList<Phase>();
-    }
+    public Cycle(List<String> allEvents, List<String> allPhases) {
+        for (String data : allEvents) {
+            events.add(new Event(data));
+        }
 
-    public Cycle(List<Event> newEvents, List<Phase> newPhases) {
-        events = new ArrayList<Event>();
-        phases = new ArrayList<Phase>();
-
-        events.addAll(newEvents);
-        phases.addAll(newPhases);
+        for (String data : allPhases) {
+            phases.add(new Phase(data));
+        }
     }
 
     public Event getEvent(int index) {
