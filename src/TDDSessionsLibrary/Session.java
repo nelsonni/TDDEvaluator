@@ -29,17 +29,25 @@ public class Session {
         eventsFile = Paths.get(eventFileName).getFileName().toString();
         cyclesFile = Paths.get(cycleFileName).getFileName().toString();
 
-        parseJSONEvents(eventFileName);
-        parseJSONCycles(cycleFileName);
+        //parseJSONEvents(eventFileName);
+        //parseJSONCycles(cycleFileName);
+    }
+
+    public int size() {
+        return cycles.size();
+    }
+
+    public Cycle getCycle(int index) {
+        return cycles.get(index);
     }
 
     public boolean addCycle(List<Event> cycleEvents, List<Phase> cyclePhases) {
         return cycles.add(new Cycle(cycleEvents, cyclePhases));
     }
 
-    public int size() {
-        return cycles.size();
-    }
+
+
+
 
 
     private void parseJSONEvents(String fileName) {

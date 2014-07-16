@@ -14,10 +14,13 @@ public class Event {
     private JSONObject operationEvent;
 
     public Event(String jString) {
+        System.out.println("Event::Event(String jString)");
+        System.out.println("jString: " + jString);
+
         operationEvent = parseJSONString(jString);
     }
 
-    public String getEvent() {
+    public String getString() {
         return operationEvent.toString();
     }
 
@@ -27,11 +30,9 @@ public class Event {
         JSONObject jObj = null;
 
         try {
-            jArray = (JSONArray) parser.parse(jsonString);
-            jObj = (JSONObject) jArray.get(0);
+            jObj = (JSONObject) parser.parse(jsonString);
         }
         catch (ParseException pe) {
-            System.out.println("Exception caught at position: " + pe.getPosition());
             System.out.println(pe);
         }
 

@@ -18,8 +18,19 @@ public class Cycle {
     }
 
     public Cycle(List<Event> newEvents, List<Phase> newPhases) {
+        events = new ArrayList<Event>();
+        phases = new ArrayList<Phase>();
+
         events.addAll(newEvents);
         phases.addAll(newPhases);
+    }
+
+    public Event getEvent(int index) {
+        return events.get(index);
+    }
+
+    public Phase getPhase(int index) {
+        return phases.get(index);
     }
 
 }
