@@ -14,11 +14,7 @@ import java.util.List;
  */
 public class FileIO {
 
-    // TODO: Fix issues with the operation of FileIO utility class
-    // this class should not be instantiated, and should instead be used as an interface
-    // to file input/output functionality through the static methods below.
-
-    public static List<String> readFromFile(String filePath) {
+    static List<String> readFromFile(String filePath) {
         Path path = Paths.get(filePath);
         List<String> content = new ArrayList<String>();
 
@@ -38,7 +34,7 @@ public class FileIO {
         return content;
     }
 
-    public static void writeToFile(String filePath, List<String> contentsList) {
+    static void writeToFile(String filePath, List<String> contentsList) {
         Path path = Paths.get(filePath);
 
         try (BufferedWriter writer = Files.newBufferedWriter(path, Charset.defaultCharset())) {
