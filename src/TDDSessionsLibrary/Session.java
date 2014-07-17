@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -16,21 +17,21 @@ import java.util.List;
  */
 public class Session {
 
-    public String eventsFile;
-    public String cyclesFile;
+    public String eventFilePath;
+    public String phaseFilePath;
     private List<Cycle> cycles;
+    private FileIO io;
 
     public Session() {
         cycles = new ArrayList<Cycle>();
     }
 
-    public Session(String eventFileName, String cycleFileName) {
+    public Session(String eventRelativeFilePath, String phaseRelativeFilePath) {
+        eventFilePath = eventRelativeFilePath;
+        phaseFilePath = phaseRelativeFilePath;
         cycles = new ArrayList<Cycle>();
-        eventsFile = Paths.get(eventFileName).getFileName().toString();
-        cyclesFile = Paths.get(cycleFileName).getFileName().toString();
-        List<String> eventContent = getFileContentsList(eventFileName);
-        List<String> cycleContent = getFileContentsList(cycleFileName);
-        addCycle(eventContent, cycleContent);
+
+        processFiles(eventFilePath, phaseFilePath);
     }
 
     public int size() {
@@ -41,22 +42,82 @@ public class Session {
         return cycles.get(index);
     }
 
-    public boolean addCycle(List<String> cycleEvents, List<String> cyclePhases) {
-        boolean result = cycles.add(new Cycle(cycleEvents, cyclePhases));
-        return result;
+    public boolean addCycle(List<Event> eventsList, List<Phase> phasesList) {
+        return cycles.add(new Cycle(eventsList, phasesList));
     }
 
-    private List<String> getFileContentsList(String filePath) {
-        Path path = Paths.get(filePath);
-        List<String> allLines = null;
+    public void processFiles(String eventsFilePath, String phasesFilePath) {
+        // step 1: get file contents
+        List<String> eventFileContent = FileIO.readFromFile(eventsFilePath);
+        List<String> phaseFileContent = FileIO.readFromFile(phasesFilePath);
 
-        try {
-            allLines = Files.readAllLines(path, Charset.defaultCharset());
-        } catch (IOException e) {
-            e.printStackTrace();
+        // step 2: convert to List<Event> and List<Phase> objects
+        List<Event> eventsList = Cycle.getEventsList(eventFileContent);
+        List<Phase> phasesList = Cycle.getPhasesList(phaseFileContent);
+
+        // step 3: delineate cycles from phases, add to List<Cycle> cycles for this session
+        processCycles(phasesList);
+
+        // step 4: add events to appropriate Cycle object
+        processEvents(eventsList);
+    }
+
+    public void printInfo() {
+        System.out.println("-----Events File-----");
+        System.out.println("FileName: " + Paths.get(eventFilePath).getFileName().toString());
+        System.out.println("FilePath: " + eventFilePath);
+        System.out.println("-----Phases File-----");
+        System.out.println("FileName: " + Paths.get(phaseFilePath).getFileName().toString());
+        System.out.println("FilePath: " + phaseFilePath);
+    }
+
+
+
+    private void processCycles(List<Phase> phasesList) {
+        Cycle newCycle = new Cycle();
+
+        for (int i = 0; i < phasesList.size()-1; i++) {
+            Phase current = phasesList.get(i);
+            Phase next = phasesList.get(i+1);
+
+            if (current.type.equals("blank")) {
+                newCycle = new Cycle();
+                newCycle.addPhase(current);
+            }
+            else if (current.type.equals("red")) {
+                newCycle = new Cycle();
+                newCycle.addPhase(current);
+            }
+            else if (current.type.equals("green")) {
+                newCycle.addPhase(current);
+            }
+            else if (current.type.equals("blue")) {
+                newCycle.addPhase(current);
+            }
+
+            if (next.type.equals("red") || (i+1) == phasesList.size()-1) {
+                System.out.println("ending cycle, adding to list");
+                System.out.println();
+                cycles.add(newCycle);
+            }
         }
+    }
 
-        return allLines;
+    private void processEvents(List<Event> eventsList) {
+        for (Cycle c : cycles) {
+            int startIndex = c.getStart();
+            int endIndex = c.getEnd();
+
+            for (int i = c.getStart(); i <= c.getEnd(); i++) {
+                try {
+                    c.addEvent(eventsList.get(i));
+                }
+                catch (IndexOutOfBoundsException e) {
+                    System.out.println("eventsList missing events included in phases of a cycle");
+                    System.out.println(e);
+                }
+            }
+        }
     }
 
 }
