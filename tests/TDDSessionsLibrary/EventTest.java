@@ -27,6 +27,12 @@ public class EventTest {
     }
 
     @Test
+    public void testSize() throws Exception {
+        Event event = new Event(json);
+        assertEquals(3, event.size());
+    }
+
+    @Test
     public void testGetString() throws Exception {
         Event event = new Event(json);
         assertEquals(0, event.getString().compareTo(json));

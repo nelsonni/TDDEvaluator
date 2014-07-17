@@ -1,14 +1,7 @@
 package TDDSessionsLibrary;
 
-import org.json.simple.JSONArray;
-
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -17,21 +10,22 @@ import java.util.List;
  */
 public class Session {
 
-    public String eventFilePath;
-    public String phaseFilePath;
+    public String eventFile;
+    public String phaseFile;
     private List<Cycle> cycles;
-    private FileIO io;
 
     public Session() {
+        eventFile = null;
+        phaseFile = null;
         cycles = new ArrayList<Cycle>();
     }
 
-    public Session(String eventRelativeFilePath, String phaseRelativeFilePath) {
-        eventFilePath = eventRelativeFilePath;
-        phaseFilePath = phaseRelativeFilePath;
+    public Session(String eventFilePath, String phaseFilePath) {
+        eventFile = eventFilePath;
+        phaseFile = phaseFilePath;
         cycles = new ArrayList<Cycle>();
 
-        processFiles(eventFilePath, phaseFilePath);
+        processFiles(eventFile, phaseFile);
     }
 
     public int size() {
@@ -64,11 +58,11 @@ public class Session {
 
     public void printInfo() {
         System.out.println("-----Events File-----");
-        System.out.println("FileName: " + Paths.get(eventFilePath).getFileName().toString());
-        System.out.println("FilePath: " + eventFilePath);
+        System.out.println("FileName: " + Paths.get(eventFile).getFileName().toString());
+        System.out.println("FilePath: " + eventFile);
         System.out.println("-----Phases File-----");
-        System.out.println("FileName: " + Paths.get(phaseFilePath).getFileName().toString());
-        System.out.println("FilePath: " + phaseFilePath);
+        System.out.println("FileName: " + Paths.get(phaseFile).getFileName().toString());
+        System.out.println("FilePath: " + phaseFile);
     }
 
 

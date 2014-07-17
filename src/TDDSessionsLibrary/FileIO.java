@@ -15,7 +15,7 @@ import java.util.List;
 public class FileIO {
 
     /***
-     * Utility method to allow reading entire text/bytecode files to be read in for use by all methods
+     * Utility method to allow reading in all text/bytecode from a local file to be use by all methods
      * within the TDDSessionsLibrary. This method does not operate asynchronously, therefore it can result
      * in a blocked state if the content within the file is too large.
      *

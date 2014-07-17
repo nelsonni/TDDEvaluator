@@ -1,8 +1,6 @@
 package TDDSessionsLibrary;
 
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,32 +18,21 @@ public class Phase {
         end = phaseEnd;
     }
 
-    public Phase(String jString) {
-        JSONObject jObj = parseJSONString(jString);
-
+    public Phase(String jsonString) {
         try {
+            JSONObject jObj = Event.parseJSONString(jsonString);
             type = jObj.get("CycleType").toString();
             start = Integer.parseInt(jObj.get("CycleStart").toString());
             end = Integer.parseInt(jObj.get("CycleEnd").toString());
         }
-        catch (ClassCastException cce) {
-            System.out.println("Phase Exception: JSON Object does not contain phase interval data.");
-            System.out.println(cce);
+        catch (ClassCastException ce) {
+            System.err.format("ClassCastException: %s%n (malformed start/end values)", ce);
         }
-    }
-
-    protected static JSONObject parseJSONString(String jsonString) {
-        JSONParser parser = new JSONParser();
-        JSONObject jObj = null;
-
-        try {
-            jObj = (JSONObject) parser.parse(jsonString);
+        catch (NullPointerException ne) {
+            type = null;
+            start = -1;
+            end = -1;
         }
-        catch (ParseException pe) {
-            System.out.println(pe);
-        }
-
-        return jObj;
     }
 
 }
