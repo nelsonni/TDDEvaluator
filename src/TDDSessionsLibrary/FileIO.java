@@ -14,6 +14,16 @@ import java.util.List;
  */
 public class FileIO {
 
+    /***
+     * Utility method to allow reading entire text/bytecode files to be read in for use by all methods
+     * within the TDDSessionsLibrary. This method does not operate asynchronously, therefore it can result
+     * in a blocked state if the content within the file is too large.
+     *
+     * The filePath parameter must be relative to the runtime directory of the TDDSessionsLibrary.
+     *
+     * @param filePath      a relative path to the destination input file (e.g. /local/usr/data.in)
+     * @return contentsList a newline-delineated collection (ArrayList object) of text lines read from file
+     */
     static List<String> readFromFile(String filePath) {
         Path path = Paths.get(filePath);
         List<String> content = new ArrayList<String>();
@@ -34,6 +44,14 @@ public class FileIO {
         return content;
     }
 
+    /***
+     * Utility method to allow for fire-and-forget writing of content to file from all methods
+     * within the TDDSessionsLibrary. This method does not operate asynchronously, therefore it can
+     * result in a blocked state if the to-be-written content is too large.
+     *
+     * @param filePath      a relative path to the destination output file (e.g. /local/usr/data.out)
+     * @param contentsList  a newline-delineated collection of text lines to be written to file
+     */
     static void writeToFile(String filePath, List<String> contentsList) {
         Path path = Paths.get(filePath);
 
