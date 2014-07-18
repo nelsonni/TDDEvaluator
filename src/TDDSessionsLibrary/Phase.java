@@ -35,4 +35,8 @@ public class Phase {
         }
     }
 
+    public String toString() {
+        return String.format("{\"CycleType\":\"%s\",\"CycleStart\":\"%d\",\"CycleEnd\":\"%d\"}", type, start, end);
+    }
+
 }

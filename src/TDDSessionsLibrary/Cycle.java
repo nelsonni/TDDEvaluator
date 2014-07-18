@@ -13,14 +13,14 @@ public class Cycle {
     private List<Phase> phases;
 
     public Cycle () {
-        events = new ArrayList<Event>();
-        phases = new ArrayList<Phase>();
+        events = new ArrayList<>();
+        phases = new ArrayList<>();
     }
 
     // TODO: Resolve issue of Phase objects indicating event start/stop without requiring those Events exist in this Cycle
     public Cycle(List<Event> allEvents, List<Phase> allPhases) {
-        events = new ArrayList<Event>();
-        phases = new ArrayList<Phase>();
+        events = new ArrayList<>();
+        phases = new ArrayList<>();
 
         if (!allEvents.isEmpty()) {
             events.addAll(allEvents);
@@ -77,7 +77,7 @@ public class Cycle {
     }
 
     protected static List<Event> parseEventList(List<String> eventFileContent) {
-        List<Event> eventsList = new ArrayList<Event>();
+        List<Event> eventsList = new ArrayList<>();
 
         for (String contentLine : eventFileContent) {
             eventsList.add(new Event(contentLine));
@@ -86,8 +86,8 @@ public class Cycle {
         return eventsList;
     }
 
-    protected static List<Phase> parsePhasesList(List<String> phaseFileContent) {
-        List<Phase> phasesList = new ArrayList<Phase>();
+    protected static List<Phase> parsePhaseList(List<String> phaseFileContent) {
+        List<Phase> phasesList = new ArrayList<>();
 
         for (String contentLine : phaseFileContent) {
             phasesList.add(new Phase(contentLine));

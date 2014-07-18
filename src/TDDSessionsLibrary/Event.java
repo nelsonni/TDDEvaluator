@@ -27,7 +27,7 @@ public class Event {
         return operationEvent.size();
     }
 
-    public String getString() {
+    public String toString() {
         return operationEvent.toString();
     }
 

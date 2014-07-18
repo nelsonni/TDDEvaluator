@@ -47,7 +47,7 @@ public class Session {
 
         // step 2: convert to Event and Phase lists
         List<Event> eventsList = Cycle.parseEventList(eventFileContent);
-        List<Phase> phasesList = Cycle.parsePhasesList(phaseFileContent);
+        List<Phase> phasesList = Cycle.parsePhaseList(phaseFileContent);
 
         // step 3: delineate cycles from phases, add to List<Cycle> cycles for this session
         processCycles(phasesList);
