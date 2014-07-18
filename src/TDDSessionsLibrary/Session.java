@@ -45,9 +45,9 @@ public class Session {
         List<String> eventFileContent = FileIO.readFromFile(eventsFilePath);
         List<String> phaseFileContent = FileIO.readFromFile(phasesFilePath);
 
-        // step 2: convert to List<Event> and List<Phase> objects
-        List<Event> eventsList = Cycle.getEventsList(eventFileContent);
-        List<Phase> phasesList = Cycle.getPhasesList(phaseFileContent);
+        // step 2: convert to Event and Phase lists
+        List<Event> eventsList = Cycle.parseEventList(eventFileContent);
+        List<Phase> phasesList = Cycle.parsePhasesList(phaseFileContent);
 
         // step 3: delineate cycles from phases, add to List<Cycle> cycles for this session
         processCycles(phasesList);
@@ -99,10 +99,8 @@ public class Session {
 
     private void processEvents(List<Event> eventsList) {
         for (Cycle c : cycles) {
-            int startIndex = c.getStart();
-            int endIndex = c.getEnd();
 
-            for (int i = c.getStart(); i <= c.getEnd(); i++) {
+            for (int i = c.start(); i <= c.end(); i++) {
                 try {
                     c.addEvent(eventsList.get(i));
                 }

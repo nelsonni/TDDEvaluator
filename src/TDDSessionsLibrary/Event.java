@@ -12,8 +12,8 @@ public class Event {
 
     private JSONObject operationEvent;
 
-    public Event(String jString) {
-        operationEvent = parseJSONString(jString);
+    public Event(String jsonString) {
+        operationEvent = parseJSONString(jsonString);
     }
 
     /***

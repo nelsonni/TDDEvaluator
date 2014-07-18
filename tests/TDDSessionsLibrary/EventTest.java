@@ -1,11 +1,11 @@
 package TDDSessionsLibrary;
 
 import org.json.simple.JSONObject;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class EventTest {
 
@@ -14,11 +14,6 @@ public class EventTest {
     @Before
     public void setUp() throws Exception {
         json = "{\"timestamp\":\"1400549108894\",\"text\":\"example\",\"changeOrigin\":\"user\"}";
-    }
-
-    @After
-    public void tearDown() throws Exception {
-
     }
 
     @Test

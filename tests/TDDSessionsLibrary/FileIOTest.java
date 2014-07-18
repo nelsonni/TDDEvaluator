@@ -4,6 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.*;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -14,7 +16,6 @@ import java.util.List;
 
 import static TDDSessionsLibrary.FileIO.readFromFile;
 import static TDDSessionsLibrary.FileIO.writeToFile;
-import static org.junit.Assert.assertEquals;
 
 public class FileIOTest {
 

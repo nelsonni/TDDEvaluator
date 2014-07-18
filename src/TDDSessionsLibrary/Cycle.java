@@ -17,7 +17,11 @@ public class Cycle {
         phases = new ArrayList<Phase>();
     }
 
+    // TODO: Resolve issue of Phase objects indicating event start/stop without requiring those Events exist in this Cycle
     public Cycle(List<Event> allEvents, List<Phase> allPhases) {
+        events = new ArrayList<Event>();
+        phases = new ArrayList<Phase>();
+
         if (!allEvents.isEmpty()) {
             events.addAll(allEvents);
         }
@@ -26,26 +30,42 @@ public class Cycle {
         }
     }
 
-    public int getStart() {
-        if (!phases.isEmpty()) {
-            return phases.get(0).start;
+    public int start() {
+        if (phases.isEmpty()) {
+            return 0;
         }
-        return 0;
+        return phases.get(0).start;
     }
 
-    public int getEnd() {
-        if (!phases.isEmpty()) {
-            return phases.get(phases.size()-1).end;
+    public int end() {
+        if (phases.isEmpty()) {
+            return 0;
         }
-        return 0;
+        return phases.get(phases.size()-1).end;
+    }
+
+    public int eventSize() {
+        return events.size();
+    }
+
+    public int phaseSize() {
+        return phases.size();
     }
 
     public boolean addEvent(Event event) {
         return events.add(event);
     }
 
+    public boolean addEvent(String jsonString) {
+        return events.add(new Event(jsonString));
+    }
+
     public boolean addPhase(Phase phase) {
         return phases.add(phase);
+    }
+
+    public boolean addPhase(String jsonString) {
+        return phases.add(new Phase(jsonString));
     }
 
     public Event getEvent(int index) {
@@ -56,7 +76,7 @@ public class Cycle {
         return phases.get(index);
     }
 
-    protected static List<Event> getEventsList(List<String> eventFileContent) {
+    protected static List<Event> parseEventList(List<String> eventFileContent) {
         List<Event> eventsList = new ArrayList<Event>();
 
         for (String contentLine : eventFileContent) {
@@ -66,7 +86,7 @@ public class Cycle {
         return eventsList;
     }
 
-    protected static List<Phase> getPhasesList(List<String> phaseFileContent) {
+    protected static List<Phase> parsePhasesList(List<String> phaseFileContent) {
         List<Phase> phasesList = new ArrayList<Phase>();
 
         for (String contentLine : phaseFileContent) {
