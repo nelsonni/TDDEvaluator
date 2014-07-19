@@ -14,16 +14,13 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import static TDDSessionsLibrary.FileIO.readFromFile;
-import static TDDSessionsLibrary.FileIO.writeToFile;
-
 public class FileIOTest {
 
     List<Path> tempFiles;
 
     @Before
     public void setUp() throws Exception {
-        tempFiles = new ArrayList<Path>();
+        tempFiles = new ArrayList<>();
     }
 
     @After
@@ -37,7 +34,7 @@ public class FileIOTest {
     public void testReadFromFile() throws Exception {
         Path temp = getTempFile();
 
-        List<String> content = readFromFile(temp.toString());
+        List<String> content = FileIO.readFromFile(temp.toString());
         String output = arrayToString(content);
 
         assertEquals("begin\n23434213423453254324\nend", output);
@@ -49,9 +46,9 @@ public class FileIOTest {
         List<String> contentsList = new ArrayList<String>();
         contentsList.add("begin\n23434213423453254324\nend");
 
-        writeToFile(temp.toString(), contentsList);
+        FileIO.writeToFile(temp.toString(), contentsList);
 
-        List<String> content = readFromFile(temp.toString());
+        List<String> content = FileIO.readFromFile(temp.toString());
         String output = arrayToString(content);
 
         assertEquals("begin\n23434213423453254324\nend", output);

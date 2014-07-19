@@ -19,6 +19,8 @@ public class Phase {
     }
 
     public Phase(String jsonString) {
+        System.out.println("Phase::Phase(jsonString): " + jsonString);
+
         try {
             JSONObject jObj = Event.parseJSONString(jsonString);
             type = jObj.get("CycleType").toString();
@@ -26,7 +28,7 @@ public class Phase {
             end = Integer.parseInt(jObj.get("CycleEnd").toString());
         }
         catch (ClassCastException ce) {
-            System.err.format("ClassCastException: %s%n (malformed start/end values)", ce);
+            System.err.format("Malformed JSON: %s%n", ce);
         }
         catch (NullPointerException ne) {
             type = null;

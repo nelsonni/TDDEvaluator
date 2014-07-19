@@ -17,13 +17,13 @@ public class Session {
     public Session() {
         eventFile = null;
         phaseFile = null;
-        cycles = new ArrayList<Cycle>();
+        cycles = new ArrayList<>();
     }
 
     public Session(String eventFilePath, String phaseFilePath) {
         eventFile = eventFilePath;
         phaseFile = phaseFilePath;
-        cycles = new ArrayList<Cycle>();
+        cycles = new ArrayList<>();
 
         processFiles(eventFile, phaseFile);
     }
@@ -41,18 +41,35 @@ public class Session {
     }
 
     public void processFiles(String eventsFilePath, String phasesFilePath) {
+
         // step 1: get file contents
+        System.out.println("\nstep 1: get file contents");
         List<String> eventFileContent = FileIO.readFromFile(eventsFilePath);
         List<String> phaseFileContent = FileIO.readFromFile(phasesFilePath);
 
+        System.out.println("processFiles::eventFileContent has size of " + eventFileContent.size());
+        System.out.println("processFiles::phaseFileContent has size of " + phaseFileContent.size());
+
         // step 2: convert to Event and Phase lists
+        System.out.println("\nstep 2: convert to Event and Phase lists");
         List<Event> eventsList = Cycle.parseEventList(eventFileContent);
         List<Phase> phasesList = Cycle.parsePhaseList(phaseFileContent);
 
+        System.out.println("processFiles::eventsList has size of " + eventsList.size());
+        System.out.println("processFiles::phasesList has size of " + phasesList.size());
+
         // step 3: delineate cycles from phases, add to List<Cycle> cycles for this session
+        System.out.println("\nstep 3: delineate cycles from phases, add to List<Cycle> cycles");
+        for (Phase p : phasesList) {
+            System.out.println("\t" + p.toString());
+        }
         processCycles(phasesList);
 
         // step 4: add events to appropriate Cycle object
+        System.out.println("\nstep 4: add events to appropriate Cycle object");
+        for (Event e : eventsList) {
+            System.out.println("\t" + e.toString());
+        }
         processEvents(eventsList);
     }
 
@@ -68,31 +85,37 @@ public class Session {
 
 
     private void processCycles(List<Phase> phasesList) {
+        // TODO: Clean-up the logic within the processCycles method
         Cycle newCycle = new Cycle();
 
-        for (int i = 0; i < phasesList.size()-1; i++) {
-            Phase current = phasesList.get(i);
-            Phase next = phasesList.get(i+1);
+        if (phasesList.size() == 1) {
+            Phase current = phasesList.get(0);
+            newCycle.addPhase(current);
+            cycles.add(newCycle);
+        }
+        else {
+            for (int i = 0; i < phasesList.size()-1; i++) {
+                Phase current = phasesList.get(i);
+                Phase next = phasesList.get(i+1);
 
-            if (current.type.equals("blank")) {
-                newCycle = new Cycle();
-                newCycle.addPhase(current);
-            }
-            else if (current.type.equals("red")) {
-                newCycle = new Cycle();
-                newCycle.addPhase(current);
-            }
-            else if (current.type.equals("green")) {
-                newCycle.addPhase(current);
-            }
-            else if (current.type.equals("blue")) {
-                newCycle.addPhase(current);
-            }
+                if (current.type.equals("blank")) {
+                    newCycle = new Cycle();
+                    newCycle.addPhase(current);
+                }
+                else if (current.type.equals("red")) {
+                    newCycle = new Cycle();
+                    newCycle.addPhase(current);
+                }
+                else if (current.type.equals("green")) {
+                    newCycle.addPhase(current);
+                }
+                else if (current.type.equals("blue")) {
+                    newCycle.addPhase(current);
+                }
 
-            if (next.type.equals("red") || (i+1) == phasesList.size()-1) {
-                System.out.println("ending cycle, adding to list");
-                System.out.println();
-                cycles.add(newCycle);
+                if (next.type.equals("red") || (i+1) == phasesList.size()-1) {
+                    cycles.add(newCycle);
+                }
             }
         }
     }

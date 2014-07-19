@@ -35,11 +35,12 @@ public class Event {
         JSONParser parser = new JSONParser();
         JSONObject jObj = null;
 
+        System.out.println("Event::parseJSONString(jsonString): " + jsonString);
         try {
             jObj = (JSONObject) parser.parse(jsonString);
         }
         catch (ParseException pe) {
-            System.err.format("ParseException: %s%n", pe);
+            System.err.format("JSON ParseException: %s%n", pe);
         }
 
         return jObj;

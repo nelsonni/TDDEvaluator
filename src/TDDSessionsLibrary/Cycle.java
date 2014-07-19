@@ -9,6 +9,8 @@ import java.util.List;
  */
 public class Cycle {
 
+    // TODO: Phase objects indicate event start/stop values, but do not require that those events exist in this Cycle object
+
     private List<Event> events;
     private List<Phase> phases;
 
@@ -17,7 +19,6 @@ public class Cycle {
         phases = new ArrayList<>();
     }
 
-    // TODO: Resolve issue of Phase objects indicating event start/stop without requiring those Events exist in this Cycle
     public Cycle(List<Event> allEvents, List<Phase> allPhases) {
         events = new ArrayList<>();
         phases = new ArrayList<>();
