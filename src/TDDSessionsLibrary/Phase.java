@@ -19,7 +19,6 @@ public class Phase {
     }
 
     public Phase(String jsonString) {
-        System.out.println("Phase::Phase(jsonString): " + jsonString);
 
         try {
             JSONObject jObj = Event.parseJSONString(jsonString);

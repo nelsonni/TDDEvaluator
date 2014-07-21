@@ -26,10 +26,10 @@ public class FileIO {
      */
     static List<String> readFromFile(String filePath) {
         Path path = Paths.get(filePath);
-        List<String> content = new ArrayList<String>();
+        List<String> content = new ArrayList<>();
 
         try (BufferedReader reader = Files.newBufferedReader(path, Charset.defaultCharset())) {
-            String line = null;
+            String line;
             while ((line = reader.readLine()) != null) {
                 content.add(line);
             }
@@ -57,7 +57,7 @@ public class FileIO {
 
         try (BufferedWriter writer = Files.newBufferedWriter(path, Charset.defaultCharset())) {
             for (String s : contentsList) {
-                writer.write(s, 0, s.length());
+                writer.write(s+"\n", 0, s.length()+1);
             }
             writer.close();
         }

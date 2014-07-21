@@ -35,7 +35,6 @@ public class Event {
         JSONParser parser = new JSONParser();
         JSONObject jObj = null;
 
-        System.out.println("Event::parseJSONString(jsonString): " + jsonString);
         try {
             jObj = (JSONObject) parser.parse(jsonString);
         }

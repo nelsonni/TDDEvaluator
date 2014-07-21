@@ -1,5 +1,6 @@
 package TDDSessionsLibrary;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,16 +48,22 @@ public class Session {
         List<String> eventFileContent = FileIO.readFromFile(eventsFilePath);
         List<String> phaseFileContent = FileIO.readFromFile(phasesFilePath);
 
-        System.out.println("processFiles::eventFileContent has size of " + eventFileContent.size());
-        System.out.println("processFiles::phaseFileContent has size of " + phaseFileContent.size());
+        System.out.println("Events: " + eventsFilePath);
+        Path x = Paths.get(eventsFilePath);
+        System.out.println("file size: " + x.toFile().length() + ", content count: " + eventFileContent.size());
+        System.out.println("Phases: " + phasesFilePath);
+        Path z = Paths.get(phasesFilePath);
+        System.out.println("file size: " + z.toFile().length() + ", content count: " + phaseFileContent.size());
 
         // step 2: convert to Event and Phase lists
         System.out.println("\nstep 2: convert to Event and Phase lists");
         List<Event> eventsList = Cycle.parseEventList(eventFileContent);
         List<Phase> phasesList = Cycle.parsePhaseList(phaseFileContent);
 
-        System.out.println("processFiles::eventsList has size of " + eventsList.size());
-        System.out.println("processFiles::phasesList has size of " + phasesList.size());
+        System.out.println("Events List:");
+        System.out.println("list size: " + eventsList.size());
+        System.out.println("Phases List:");
+        System.out.println("list size: " + phasesList.size());
 
         // step 3: delineate cycles from phases, add to List<Cycle> cycles for this session
         System.out.println("\nstep 3: delineate cycles from phases, add to List<Cycle> cycles");
