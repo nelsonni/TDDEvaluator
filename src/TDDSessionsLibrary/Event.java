@@ -15,7 +15,7 @@ public class Event {
     private JSONObject operationEvent;
 
     public Event(String jsonString) {
-        operationEvent = parseJSONString(jsonString);
+        operationEvent = FileIO.parseJSONString(jsonString);
     }
 
     /***
@@ -33,26 +33,6 @@ public class Event {
         return operationEvent.toString();
     }
 
-    protected static JSONObject parseJSONString(String jsonString) {
-        JSONParser parser = new JSONParser();
-        JSONObject jObj = null;
 
-        // sanitize JSON for parsing
-        if (jsonString.contains("{") && jsonString.contains("}")) {
-            int jsonOpenPos = jsonString.indexOf("{");
-            int jsonClosePos = jsonString.lastIndexOf("}")+1;
-            jsonString = jsonString.substring(jsonOpenPos, jsonClosePos);
-        }
-
-        try {
-            jObj = (JSONObject) parser.parse(jsonString);
-        }
-        catch (ParseException pe) {
-            System.err.format("JSON ParseException: %s%n", pe);
-            pe.printStackTrace();
-        }
-
-        return jObj;
-    }
 
 }

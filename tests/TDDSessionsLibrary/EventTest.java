@@ -22,12 +22,4 @@ public class EventTest {
         assertEquals(json, event.toString());
     }
 
-    @Test
-    public void testParseJSONString() throws Exception {
-        JSONObject jObj = Event.parseJSONString(json);
-        assertEquals("1400549108894", jObj.get("timestamp").toString());
-        assertEquals("example", jObj.get("text").toString());
-        assertEquals("user", jObj.get("changeOrigin").toString());
-    }
-
 }

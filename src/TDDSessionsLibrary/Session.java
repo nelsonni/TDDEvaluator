@@ -46,10 +46,16 @@ public class Session {
         // step 1: get file contents
         List<String> eventFileContent = FileIO.readFromFile(eventFilePath);
         List<String> phaseFileContent = FileIO.readFromFile(phaseFilePath);
+        System.out.println("phases (a): " + phaseFileContent.size());
+
+        for (String s : phaseFileContent) {
+            System.out.println("string: " + s);
+        }
 
         // step 2: convert to Event and Phase lists
         List<Event> eventsList = Cycle.parseEventList(eventFileContent);
         List<Phase> phasesList = Cycle.parsePhaseList(phaseFileContent);
+        System.out.println("phases (b): " + phasesList.size());
 
         // step 3: delineate cycles from phases, add to List<Cycle> cycles for this session
         processCycles(phasesList);
@@ -61,9 +67,12 @@ public class Session {
     private void processCycles(List<Phase> phasesList) {
         Cycle currentCycle = new Cycle();
 
+        System.out.println("phases (c): " + phasesList.size());
+
         // use a queue to evaluate phases in order
         Queue<Phase> queue = new LinkedList<>();
         for (Phase p : phasesList) {
+            System.out.println("phase type: " + p.type + ", start: " + p.start + ", end: " + p.end);
             queue.add(p);
         }
 
@@ -94,11 +103,20 @@ public class Session {
                 cycles.add(currentCycle);
             }
         }
+
+        System.out.println("cycles size: " + cycles.size());
+        for (Cycle c : cycles) {
+            System.out.println("cycle of " + c.phaseSize() + " phases (" + c.start() + "-" + c.end() + ") and " + c.eventSize() + " events");
+        }
     }
 
     private void processEvents(List<Event> eventsList) {
-        for (Cycle c : cycles) {
+        for (Event e : eventsList) {
+            System.out.println("eventsList: " + e.toString());
+        }
 
+
+        for (Cycle c : cycles) {
             for (int i = c.start(); i <= c.end(); i++) {
                 try {
                     c.addEvent(eventsList.get(i));

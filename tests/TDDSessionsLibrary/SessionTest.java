@@ -104,17 +104,20 @@ public class SessionTest {
         FileIO.writeToFile(phaseTemp.toString(), "{\"CycleType\":\"green\",\"CycleEnd\":\"1904\",\"id\":\"13751904\",\"CycleStart\":\"1375\"},");
         FileIO.writeToFile(phaseTemp.toString(), "{\"CycleType\":\"blue\",\"CycleEnd\":\"1947\",\"id\":\"19051947\",\"CycleStart\":\"1905\"}]");
 
-        Session s = new Session();
-        s.parseFiles(eventTemp.toString(), phaseTemp.toString());
-
-        for (int i = 0; i < s.size(); i++) {
-            Cycle c = s.getCycle(i);
-            System.out.println("cycle " + i + ":");
-            for (int j = 0; j < c.phaseSize(); j++) {
-                Phase p = c.getPhase(j);
-                System.out.println("\tphase j: type:" + p.type + ", start:" + p.start + ", end:" + p.end);
+        for (int i = 0; i < 1948; i++) {
+            if (i == 0) {
+                FileIO.writeToFile(phaseTemp.toString(), "[{\"timestamp\":\"1400549108894\",\"text\":\"example\",\"changeOrigin\":\"user\"},");
+            }
+            else if (i == 1947) {
+                FileIO.writeToFile(phaseTemp.toString(), "{\"timestamp\":\"1400549108894\",\"text\":\"example\",\"changeOrigin\":\"user\"}]");
+            }
+            else {
+                FileIO.writeToFile(phaseTemp.toString(), "{\"timestamp\":\"1400549108894\",\"text\":\"example\",\"changeOrigin\":\"user\"},");
             }
         }
+
+        Session s = new Session();
+        s.parseFiles(eventTemp.toString(), phaseTemp.toString());
 
         assertEquals(5, s.size());
     }

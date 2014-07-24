@@ -1,10 +1,17 @@
 package TDDSessionsLibrary;
 
-import java.io.*;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,12 +33,14 @@ public class FileIO {
      */
     static List<String> readFromFile(String filePath) {
         Path path = Paths.get(filePath);
-        List<String> content = new ArrayList<>();
+
+        List<String> lines = new ArrayList<>();
 
         try (BufferedReader reader = Files.newBufferedReader(path, Charset.defaultCharset())) {
             String line;
             while ((line = reader.readLine()) != null) {
-                content.add(line);
+                System.out.println(line);
+                lines.add(line);
             }
         }
         catch (IOException e) {
@@ -41,7 +50,7 @@ public class FileIO {
             System.err.format("NullPointerException: %s%n", e);
         }
 
-        return content;
+        return lines;
     }
 
     /***
@@ -55,13 +64,45 @@ public class FileIO {
     static void writeToFile(String filePath, String content) {
         Path path = Paths.get(filePath);
 
-        try (BufferedWriter writer = Files.newBufferedWriter(path, Charset.defaultCharset())) {
+        try (BufferedWriter writer = Files.newBufferedWriter(path, Charset.defaultCharset(), StandardOpenOption.APPEND)) {
             writer.write(content, 0, content.length());
             writer.close();
         }
         catch (IOException e) {
             System.err.format("IOException: %s%n", e);
         }
+    }
+
+    static JSONObject parseJSONString(String jsonString) {
+        JSONParser parser = new JSONParser();
+        JSONObject jObj = null;
+
+        // sanitize JSON for parsing
+        if (jsonString.contains("{") && jsonString.contains("}")) {
+            int jsonOpenPos = jsonString.indexOf("{");
+            int jsonClosePos = jsonString.lastIndexOf("}")+1;
+            jsonString = jsonString.substring(jsonOpenPos, jsonClosePos);
+        }
+
+        try {
+            jObj = (JSONObject) parser.parse(jsonString);
+        }
+        catch (ParseException pe) {
+            System.err.format("JSON ParseException: %s%n", pe);
+        }
+
+        return jObj;
+    }
+
+    static String arrayToString(List<String> contentArray) {
+        StringBuilder sb = new StringBuilder();
+
+        for (String s : contentArray) {
+            sb.append(s).append(System.lineSeparator());
+        }
+        sb.deleteCharAt(sb.length()-1);
+
+        return sb.toString();
     }
 
 }

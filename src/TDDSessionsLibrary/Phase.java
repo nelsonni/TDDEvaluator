@@ -21,7 +21,7 @@ public class Phase {
     public Phase(String jsonString) {
 
         try {
-            JSONObject jObj = Event.parseJSONString(jsonString);
+            JSONObject jObj = FileIO.parseJSONString(jsonString);
             type = jObj.get("CycleType").toString();
             start = Integer.parseInt(jObj.get("CycleStart").toString());
             end = Integer.parseInt(jObj.get("CycleEnd").toString());
