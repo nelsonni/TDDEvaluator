@@ -1,9 +1,9 @@
 package TDDSessionsLibrary;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,7 +26,7 @@ public class Session {
         phaseFile = phaseFilePath;
         cycles = new ArrayList<>();
 
-        processFiles(eventFile, phaseFile);
+        parseFiles(eventFile, phaseFile);
     }
 
     public int size() {
@@ -41,58 +41,41 @@ public class Session {
         return cycles.add(new Cycle(eventsList, phasesList));
     }
 
-    public void processFiles(String eventsFilePath, String phasesFilePath) {
+    public void parseFiles(String eventFilePath, String phaseFilePath) {
 
         // step 1: get file contents
-        System.out.println("\nstep 1: get file contents");
-        List<String> eventFileContent = FileIO.readFromFile(eventsFilePath);
-        List<String> phaseFileContent = FileIO.readFromFile(phasesFilePath);
-
-        System.out.println("Events: " + eventsFilePath);
-        Path x = Paths.get(eventsFilePath);
-        System.out.println("file size: " + x.toFile().length() + ", content count: " + eventFileContent.size());
-        System.out.println("Phases: " + phasesFilePath);
-        Path z = Paths.get(phasesFilePath);
-        System.out.println("file size: " + z.toFile().length() + ", content count: " + phaseFileContent.size());
+        List<String> eventFileContent = FileIO.readFromFile(eventFilePath);
+        List<String> phaseFileContent = FileIO.readFromFile(phaseFilePath);
 
         // step 2: convert to Event and Phase lists
-        System.out.println("\nstep 2: convert to Event and Phase lists");
         List<Event> eventsList = Cycle.parseEventList(eventFileContent);
         List<Phase> phasesList = Cycle.parsePhaseList(phaseFileContent);
 
-        System.out.println("Events List:");
-        System.out.println("list size: " + eventsList.size());
-        System.out.println("Phases List:");
-        System.out.println("list size: " + phasesList.size());
-
         // step 3: delineate cycles from phases, add to List<Cycle> cycles for this session
-        System.out.println("\nstep 3: delineate cycles from phases, add to List<Cycle> cycles");
-        for (Phase p : phasesList) {
-            System.out.println("\t" + p.toString());
-        }
         processCycles(phasesList);
 
         // step 4: add events to appropriate Cycle object
-        System.out.println("\nstep 4: add events to appropriate Cycle object");
-        for (Event e : eventsList) {
-            System.out.println("\t" + e.toString());
-        }
         processEvents(eventsList);
     }
 
-    public void printInfo() {
-        System.out.println("-----Events File-----");
-        System.out.println("FileName: " + Paths.get(eventFile).getFileName().toString());
-        System.out.println("FilePath: " + eventFile);
-        System.out.println("-----Phases File-----");
-        System.out.println("FileName: " + Paths.get(phaseFile).getFileName().toString());
-        System.out.println("FilePath: " + phaseFile);
-    }
-
-
-
     private void processCycles(List<Phase> phasesList) {
         // TODO: Clean-up the logic within the processCycles method
+
+        Cycle cycle = new Cycle();
+
+        // use a queue to evaluate phases in order
+        Queue<Phase> queue = new LinkedList<>();
+        for (Phase p : phasesList) {
+            queue.add(p);
+        }
+
+        for (Phase p : phasesList) {
+            System.out.println("List: " + p.toString() + " || " + queue.remove().toString() + " :Queue");
+        }
+
+        // expand on the idea of using queues for processing the cycles in-stream style
+        System.out.println("------------------------------------------------");
+
         Cycle newCycle = new Cycle();
 
         if (phasesList.size() == 1) {

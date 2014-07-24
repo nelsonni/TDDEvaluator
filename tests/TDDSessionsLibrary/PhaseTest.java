@@ -34,7 +34,7 @@ public class PhaseTest {
         Phase phase = new Phase(json);
 
         assertTrue(phase instanceof Phase);
-        assertEquals(null, phase.type);
+        assertEquals("error", phase.type);
         assertEquals(-1, phase.start);
         assertEquals(-1, phase.end);
     }

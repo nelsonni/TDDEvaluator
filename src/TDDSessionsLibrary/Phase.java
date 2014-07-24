@@ -30,7 +30,7 @@ public class Phase {
             System.err.format("Malformed JSON: %s%n", ce);
         }
         catch (NullPointerException ne) {
-            type = null;
+            type = "error";
             start = -1;
             end = -1;
         }

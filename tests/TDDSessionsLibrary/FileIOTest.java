@@ -16,20 +16,6 @@ import java.util.List;
 
 public class FileIOTest {
 
-    List<Path> tempFiles;
-
-    @Before
-    public void setUp() throws Exception {
-        tempFiles = new ArrayList<>();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        for (Path p : tempFiles) {
-            p.toFile().delete();
-        }
-    }
-
     @Test
     public void testReadFromFile() throws Exception {
         Path temp = getTempFile();
@@ -43,13 +29,12 @@ public class FileIOTest {
     @Test
     public void testWriteToFile() throws Exception {
         Path temp = getEmptyTempFile();
-        List<String> contentsList = new ArrayList<String>();
-        contentsList.add("begin\n23434213423453254324\nend");
+        String writeContent = "begin\n23434213423453254324\nend";
 
-        FileIO.writeToFile(temp.toString(), contentsList);
+        FileIO.writeToFile(temp.toString(), writeContent);
 
-        List<String> content = FileIO.readFromFile(temp.toString());
-        String output = arrayToString(content);
+        List<String> readContent = FileIO.readFromFile(temp.toString());
+        String output = arrayToString(readContent);
 
         assertEquals("begin\n23434213423453254324\nend", output);
     }
@@ -58,7 +43,7 @@ public class FileIOTest {
         StringBuilder sb = new StringBuilder();
 
         for (String s : contentArray) {
-            sb.append(s).append('\n');
+            sb.append(s).append(System.lineSeparator());
         }
         sb.deleteCharAt(sb.length()-1);
 
@@ -89,7 +74,6 @@ public class FileIOTest {
             e.printStackTrace();
         }
 
-        tempFiles.add(temp);
         System.out.println("created temporary file: " + temp.toString());
 
         return temp;

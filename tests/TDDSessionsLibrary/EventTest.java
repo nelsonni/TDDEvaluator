@@ -25,7 +25,9 @@ public class EventTest {
     @Test
     public void testParseJSONString() throws Exception {
         JSONObject jObj = Event.parseJSONString(json);
-        assertEquals(0, jObj.get("timestamp").toString().compareTo("1400549108894"));
+        assertEquals("1400549108894", jObj.get("timestamp").toString());
+        assertEquals("example", jObj.get("text").toString());
+        assertEquals("user", jObj.get("changeOrigin").toString());
     }
 
 }

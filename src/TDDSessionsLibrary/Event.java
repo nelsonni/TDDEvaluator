@@ -1,6 +1,8 @@
 package TDDSessionsLibrary;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -35,11 +37,19 @@ public class Event {
         JSONParser parser = new JSONParser();
         JSONObject jObj = null;
 
+        // sanitize JSON for parsing
+        if (jsonString.contains("{") && jsonString.contains("}")) {
+            int jsonOpenPos = jsonString.indexOf("{");
+            int jsonClosePos = jsonString.lastIndexOf("}")+1;
+            jsonString = jsonString.substring(jsonOpenPos, jsonClosePos);
+        }
+
         try {
             jObj = (JSONObject) parser.parse(jsonString);
         }
         catch (ParseException pe) {
             System.err.format("JSON ParseException: %s%n", pe);
+            pe.printStackTrace();
         }
 
         return jObj;

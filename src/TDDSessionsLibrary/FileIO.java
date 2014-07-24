@@ -50,15 +50,13 @@ public class FileIO {
      * result in a blocked state if the to-be-written content is too large.
      *
      * @param filePath      a relative path to the destination output file (e.g. /local/usr/data.out)
-     * @param contentsList  a newline-delineated collection of text lines to be written to file
+     * @param content  a newline-delineated collection of text lines to be written to file
      */
-    static void writeToFile(String filePath, List<String> contentsList) {
+    static void writeToFile(String filePath, String content) {
         Path path = Paths.get(filePath);
 
         try (BufferedWriter writer = Files.newBufferedWriter(path, Charset.defaultCharset())) {
-            for (String s : contentsList) {
-                writer.write(s+"\n", 0, s.length()+1);
-            }
+            writer.write(content, 0, content.length());
             writer.close();
         }
         catch (IOException e) {
