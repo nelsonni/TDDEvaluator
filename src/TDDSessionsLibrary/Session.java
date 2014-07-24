@@ -59,9 +59,7 @@ public class Session {
     }
 
     private void processCycles(List<Phase> phasesList) {
-        // TODO: Clean-up the logic within the processCycles method
-
-        Cycle cycle = new Cycle();
+        Cycle currentCycle = new Cycle();
 
         // use a queue to evaluate phases in order
         Queue<Phase> queue = new LinkedList<>();
@@ -69,43 +67,31 @@ public class Session {
             queue.add(p);
         }
 
-        for (Phase p : phasesList) {
-            System.out.println("List: " + p.toString() + " || " + queue.remove().toString() + " :Queue");
-        }
+        while (!queue.isEmpty()) {
 
-        // expand on the idea of using queues for processing the cycles in-stream style
-        System.out.println("------------------------------------------------");
+            switch (queue.peek().type) {
+                case "red":
+                    if (currentCycle.phaseSize() > 0) {
+                        cycles.add(currentCycle);
+                    }
+                    currentCycle = new Cycle();
+                    currentCycle.addPhase(queue.remove());
+                    break;
+                case "green":
+                    currentCycle.addPhase(queue.remove());
+                    break;
+                case "blue":
+                    currentCycle.addPhase(queue.remove());
+                    break;
+                default:
+                    currentCycle = new Cycle();
+                    currentCycle.addPhase(queue.remove());
+                    break;
+            }
 
-        Cycle newCycle = new Cycle();
-
-        if (phasesList.size() == 1) {
-            Phase current = phasesList.get(0);
-            newCycle.addPhase(current);
-            cycles.add(newCycle);
-        }
-        else {
-            for (int i = 0; i < phasesList.size()-1; i++) {
-                Phase current = phasesList.get(i);
-                Phase next = phasesList.get(i+1);
-
-                if (current.type.equals("blank")) {
-                    newCycle = new Cycle();
-                    newCycle.addPhase(current);
-                }
-                else if (current.type.equals("red")) {
-                    newCycle = new Cycle();
-                    newCycle.addPhase(current);
-                }
-                else if (current.type.equals("green")) {
-                    newCycle.addPhase(current);
-                }
-                else if (current.type.equals("blue")) {
-                    newCycle.addPhase(current);
-                }
-
-                if (next.type.equals("red") || (i+1) == phasesList.size()-1) {
-                    cycles.add(newCycle);
-                }
+            // handle the last cycle if it exists
+            if (currentCycle.phaseSize() > 0) {
+                cycles.add(currentCycle);
             }
         }
     }
@@ -118,8 +104,7 @@ public class Session {
                     c.addEvent(eventsList.get(i));
                 }
                 catch (IndexOutOfBoundsException e) {
-                    System.out.println("eventsList missing events included in phases of a cycle");
-                    System.out.println(e);
+                    System.err.format("Phases Missing Referenced Events: %s%n", e);
                 }
             }
         }

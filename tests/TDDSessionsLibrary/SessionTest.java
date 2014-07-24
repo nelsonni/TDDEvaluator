@@ -87,33 +87,36 @@ public class SessionTest {
 
     @Test
     public void testParseFiles() throws Exception {
-
-        assertTrue(true);
-
-        /*
-        List<String> cycles = new ArrayList<>();
-        cycles.add("[{\"CycleType\":\"red\",\"CycleEnd\":\"344\",\"id\":\"0344\",\"CycleStart\":\"0\"},");
-        cycles.add("{\"CycleType\":\"green\",\"CycleEnd\":\"381\",\"id\":\"345381\",\"CycleStart\":\"345\"},");
-        cycles.add("{\"CycleType\":\"blue\",\"CycleEnd\":\"408\",\"id\":\"382408\",\"CycleStart\":\"382\"},");
-        cycles.add("{\"CycleType\":\"red\",\"CycleEnd\":\"496\",\"id\":\"409496\",\"CycleStart\":\"409\"},");
-        cycles.add("{\"CycleType\":\"green\",\"CycleEnd\":\"710\",\"id\":\"497710\",\"CycleStart\":\"497\"},");
-        cycles.add("{\"CycleType\":\"red\",\"CycleEnd\":\"795\",\"id\":\"711795\",\"CycleStart\":\"711\"},");
-        cycles.add("{\"CycleType\":\"green\",\"CycleEnd\":\"1038\",\"id\":\"7961038\",\"CycleStart\":\"796\"},");
-        cycles.add("{\"CycleType\":\"blue\",\"CycleEnd\":\"1120\",\"id\":\"10391120\",\"CycleStart\":\"1039\"},");
-        cycles.add("{\"CycleType\":\"red\",\"CycleEnd\":\"1168\",\"id\":\"11211168\",\"CycleStart\":\"1121\"},");
-        cycles.add("{\"CycleType\":\"green\",\"CycleEnd\":\"1281\",\"id\":\"11691281\",\"CycleStart\":\"1169\"},");
-        cycles.add("{\"CycleType\":\"red\",\"CycleEnd\":\"1374\",\"id\":\"12821374\",\"CycleStart\":\"1282\"},");
-        cycles.add("{\"CycleType\":\"green\",\"CycleEnd\":\"1904\",\"id\":\"13751904\",\"CycleStart\":\"1375\"},");
-        cycles.add("{\"CycleType\":\"blue\",\"CycleEnd\":\"1947\",\"id\":\"19051947\",\"CycleStart\":\"1905\"}]");
-
         Path eventTemp = getEmptyTempFile();
         Path phaseTemp = getEmptyTempFile();
-        FileIO.writeToFile(phaseTemp.toString(), cycles);
+
+        FileIO.writeToFile(phaseTemp.toString(), "[{\"CycleType\":\"red\",\"CycleEnd\":\"344\",\"id\":\"0344\",\"CycleStart\":\"0\"},");
+        FileIO.writeToFile(phaseTemp.toString(), "{\"CycleType\":\"green\",\"CycleEnd\":\"381\",\"id\":\"345381\",\"CycleStart\":\"345\"},");
+        FileIO.writeToFile(phaseTemp.toString(), "{\"CycleType\":\"blue\",\"CycleEnd\":\"408\",\"id\":\"382408\",\"CycleStart\":\"382\"},");
+        FileIO.writeToFile(phaseTemp.toString(), "{\"CycleType\":\"red\",\"CycleEnd\":\"496\",\"id\":\"409496\",\"CycleStart\":\"409\"},");
+        FileIO.writeToFile(phaseTemp.toString(), "{\"CycleType\":\"green\",\"CycleEnd\":\"710\",\"id\":\"497710\",\"CycleStart\":\"497\"},");
+        FileIO.writeToFile(phaseTemp.toString(), "{\"CycleType\":\"red\",\"CycleEnd\":\"795\",\"id\":\"711795\",\"CycleStart\":\"711\"},");
+        FileIO.writeToFile(phaseTemp.toString(), "{\"CycleType\":\"green\",\"CycleEnd\":\"1038\",\"id\":\"7961038\",\"CycleStart\":\"796\"},");
+        FileIO.writeToFile(phaseTemp.toString(), "{\"CycleType\":\"blue\",\"CycleEnd\":\"1120\",\"id\":\"10391120\",\"CycleStart\":\"1039\"},");
+        FileIO.writeToFile(phaseTemp.toString(), "{\"CycleType\":\"red\",\"CycleEnd\":\"1168\",\"id\":\"11211168\",\"CycleStart\":\"1121\"},");
+        FileIO.writeToFile(phaseTemp.toString(), "{\"CycleType\":\"green\",\"CycleEnd\":\"1281\",\"id\":\"11691281\",\"CycleStart\":\"1169\"},");
+        FileIO.writeToFile(phaseTemp.toString(), "{\"CycleType\":\"red\",\"CycleEnd\":\"1374\",\"id\":\"12821374\",\"CycleStart\":\"1282\"},");
+        FileIO.writeToFile(phaseTemp.toString(), "{\"CycleType\":\"green\",\"CycleEnd\":\"1904\",\"id\":\"13751904\",\"CycleStart\":\"1375\"},");
+        FileIO.writeToFile(phaseTemp.toString(), "{\"CycleType\":\"blue\",\"CycleEnd\":\"1947\",\"id\":\"19051947\",\"CycleStart\":\"1905\"}]");
 
         Session s = new Session();
         s.parseFiles(eventTemp.toString(), phaseTemp.toString());
+
+        for (int i = 0; i < s.size(); i++) {
+            Cycle c = s.getCycle(i);
+            System.out.println("cycle " + i + ":");
+            for (int j = 0; j < c.phaseSize(); j++) {
+                Phase p = c.getPhase(j);
+                System.out.println("\tphase j: type:" + p.type + ", start:" + p.start + ", end:" + p.end);
+            }
+        }
+
         assertEquals(5, s.size());
-        */
     }
 
     // utility method; only used for constructing temporary files
