@@ -1,12 +1,7 @@
 package TDDSessionsLibrary;
 
 import org.json.simple.JSONObject;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -16,6 +11,8 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class FileIOTest {
 
@@ -110,12 +107,11 @@ public class FileIOTest {
 
         try {
             temp = Files.createTempFile(null, ".tmp");
+            System.out.println("created temporary file: " + temp.toString());
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-
-        System.out.println("created temporary file: " + temp.toString());
 
         return temp;
     }

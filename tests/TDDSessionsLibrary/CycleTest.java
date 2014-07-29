@@ -1,6 +1,5 @@
 package TDDSessionsLibrary;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,6 +31,8 @@ public class CycleTest {
         try {
             Cycle c1 = new Cycle();
             Cycle c2 = new Cycle(events, phases);
+            assertNotNull(c1);
+            assertNotNull(c2);
         }
         catch (IllegalArgumentException e) {
             fail();
