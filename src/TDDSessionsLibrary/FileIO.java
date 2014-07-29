@@ -39,7 +39,6 @@ public class FileIO {
         try (BufferedReader reader = Files.newBufferedReader(path, Charset.defaultCharset())) {
             String line;
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
                 lines.add(line);
             }
         }
@@ -73,6 +72,14 @@ public class FileIO {
         }
     }
 
+    /***
+     * Utility method to parse and convert all JSON-compatible elements from java.lang.String format to a
+     * org.json.JSONObject instance that can be used to access and iterate all JSON elements from files or streams.
+     *
+     * @param jsonString    a java.lang.String object containing newline delineated text to be converted
+     * @return jObj         a org.json.JSONObject that contains all JSON-compatible elements from the
+     *                      parameter java.lang.String object
+     */
     static JSONObject parseJSONString(String jsonString) {
         JSONParser parser = new JSONParser();
         JSONObject jObj = null;
@@ -94,6 +101,15 @@ public class FileIO {
         return jObj;
     }
 
+    /***
+     * Utility method to convert line-based text content from array to java.lang.String format in preparation
+     * for writing to file using the writeToFile(String, String) method.
+     *
+     * @param contentArray  an instance of the java.util.List interface class that contains java.lang.String
+     *                      objects in contextual order, with top line in position 0.
+     * @return contentStr   a java.lang.String object containing newline delineated text from parameter
+     *                      java.util.List object
+     */
     static String arrayToString(List<String> contentArray) {
         StringBuilder sb = new StringBuilder();
 
