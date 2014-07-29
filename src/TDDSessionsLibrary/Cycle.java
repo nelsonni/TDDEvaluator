@@ -9,8 +9,6 @@ import java.util.List;
  */
 public class Cycle {
 
-    // TODO: Phase objects indicate event start/stop values, but do not require that those events exist in this Cycle object
-
     private List<Event> events;
     private List<Phase> phases;
 
