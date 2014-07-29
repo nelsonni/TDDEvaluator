@@ -9,6 +9,7 @@ public class PhaseTest {
 
     @Test
     public void testParameterConstructor() throws Exception {
+        System.out.println("PhaseTest::testParameterConstructor...");
         Phase phase = new Phase("red", 12, 20);
 
         assertTrue(phase instanceof Phase);
@@ -19,6 +20,7 @@ public class PhaseTest {
 
     @Test
     public void testGoodJSONStringConstructor() throws Exception {
+        System.out.println("PhaseTest::testGoodJSONStringConstructor...");
         String json = "{\"CycleType\":\"blue\",\"CycleStart\":\"24\",\"CycleEnd\":\"32\"}";
         Phase phase = new Phase(json);
 
@@ -30,6 +32,7 @@ public class PhaseTest {
 
     @Test
     public void testBadJSONStringConstructor() throws Exception {
+        System.out.println("PhaseTest::testBadJSONStringConstructor...");
         String json = "{\"timestamp\":\"1400549108894\",\"text\":\"example\",\"changeOrigin\":\"user\"}";
         Phase phase = new Phase(json);
 

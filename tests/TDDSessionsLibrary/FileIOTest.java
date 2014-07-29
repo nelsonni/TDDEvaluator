@@ -21,6 +21,7 @@ public class FileIOTest {
 
     @Test
     public void testReadFromFile() throws Exception {
+        System.out.println("FileIOTest::testReadFromFile...");
         Path temp = getTempFile();
 
         List<String> content = FileIO.readFromFile(temp.toString());
@@ -31,6 +32,7 @@ public class FileIOTest {
 
     @Test
     public void testWriteToFile() throws Exception {
+        System.out.println("FileIOTest::testWriteToFile...");
         Path temp = getEmptyTempFile();
         String writeContent = "begin\n23434213423453254324\nend";
 
@@ -44,6 +46,7 @@ public class FileIOTest {
 
     @Test
     public void testParseJSONString() throws Exception {
+        System.out.println("FileIOTest::testParseJSONString...");
         String json = "{\"timestamp\":\"1400549108894\",\"text\":\"example\",\"changeOrigin\":\"user\"}";
         JSONObject jObj = FileIO.parseJSONString(json);
 
@@ -54,6 +57,7 @@ public class FileIOTest {
 
     @Test
     public void testArrayToString() throws Exception {
+        System.out.println("FileIOTest::testArrayToString...");
         List<String> cycleLines = new ArrayList<>();
         cycleLines.add("[{\"CycleType\":\"red\",\"CycleEnd\":\"344\",\"id\":\"0344\",\"CycleStart\":\"0\"},");
         cycleLines.add("{\"CycleType\":\"green\",\"CycleEnd\":\"381\",\"id\":\"345381\",\"CycleStart\":\"345\"},");

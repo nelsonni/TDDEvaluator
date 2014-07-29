@@ -88,11 +88,11 @@ public class Session {
                     currentCycle.addPhase(queue.remove());
                     break;
             }
+        }
 
-            // handle the last cycle if it exists
-            if (currentCycle.phaseSize() > 0) {
-                cycles.add(currentCycle);
-            }
+        // handle the last cycle if it exists
+        if (currentCycle.phaseSize() > 0) {
+            cycles.add(currentCycle);
         }
     }
 

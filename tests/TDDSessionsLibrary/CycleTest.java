@@ -28,6 +28,7 @@ public class CycleTest {
 
     @Test
     public void testConstructors() throws Exception {
+        System.out.println("CycleTest::testConstructors...");
         try {
             Cycle c1 = new Cycle();
             Cycle c2 = new Cycle(events, phases);
@@ -39,6 +40,7 @@ public class CycleTest {
 
     @Test
     public void testAddEventObject() throws Exception {
+        System.out.println("CycleTest::testAddEventObject...");
         Event e = new Event(jsonEvent);
         assertTrue(c1.addEvent(e));
         assertTrue(c2.addEvent(e));
@@ -46,12 +48,14 @@ public class CycleTest {
 
     @Test
     public void testAddEventString() throws Exception {
+        System.out.println("CycleTest::testAddEventString...");
         assertTrue(c1.addEvent(jsonEvent));
         assertTrue(c2.addEvent(jsonEvent));
     }
 
     @Test
     public void testAddPhaseObject() throws Exception {
+        System.out.println("CycleTest::testAddPhaseObject...");
         Phase p = new Phase(jsonPhase);
         assertTrue(c1.addPhase(p));
         assertTrue(c2.addPhase(p));
@@ -59,6 +63,7 @@ public class CycleTest {
 
     @Test
     public void testAddPhaseString() throws Exception {
+        System.out.println("CycleTest::testAddPhaseString...");
         c1.addPhase(jsonPhase);
         c2.addPhase(jsonPhase);
 
@@ -68,6 +73,7 @@ public class CycleTest {
 
     @Test
     public void testEventSize() {
+        System.out.println("CycleTest::testEventSize...");
         Event e = new Event(jsonEvent);
         c1.addEvent(e);
         c1.addEvent(e);
@@ -78,6 +84,7 @@ public class CycleTest {
 
     @Test
     public void testPhaseSize() {
+        System.out.println("CycleTest::testPhaseSize...");
         Phase p = new Phase(jsonPhase);
         c1.addPhase(p);
         c2.addPhase(p);
@@ -88,6 +95,7 @@ public class CycleTest {
 
     @Test
     public void testGetEvent() throws Exception {
+        System.out.println("CycleTest::testGetEvent...");
         Event e = new Event(jsonEvent);
         c1.addEvent(e);
         c2.addEvent(e);
@@ -98,6 +106,7 @@ public class CycleTest {
 
     @Test
     public void testGetPhase() throws Exception {
+        System.out.println("CycleTest::testGetPhase...");
         Phase p = new Phase(jsonPhase);
         c1.addPhase(p);
         c2.addPhase(p);
@@ -108,6 +117,7 @@ public class CycleTest {
 
     @Test
     public void testParseEventList() throws Exception {
+        System.out.println("CycleTest::testParseEventList...");
         List<String> events = new ArrayList<>();
         events.add(jsonEvent);
         events.add(jsonEvent);
@@ -117,6 +127,7 @@ public class CycleTest {
 
     @Test
     public void testParsePhasesList() throws Exception {
+        System.out.println("CycleTest::testParsePhasesList...");
         List<String> phases = new ArrayList<>();
         phases.add(jsonPhase);
 
