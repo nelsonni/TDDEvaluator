@@ -40,6 +40,23 @@ public class CycleTest {
     }
 
     @Test
+    public void testEqualsTrue() throws Exception {
+        System.out.println("CycleTest::testEqualsTrue...");
+        Cycle c1 = new Cycle(events, phases);
+        Cycle c2 = new Cycle(events, phases);
+        assertTrue(c1.equals(c2));
+    }
+
+    @Test
+    public void testEqualsFalse() throws Exception {
+        System.out.println("CycleTest::testEqualsFalse...");
+        Cycle c1 = new Cycle(events, phases);
+        Cycle c2 = new Cycle(events, phases);
+        c2.addEvent(new Event("{\"timestamp\":\"1400549108894\",\"text\":\"some example\",\"changeOrigin\":\"user\"}"));
+        assertFalse(c1.equals(c2));
+    }
+
+    @Test
     public void testAddEventObject() throws Exception {
         System.out.println("CycleTest::testAddEventObject...");
         Event e = new Event(jsonEvent);

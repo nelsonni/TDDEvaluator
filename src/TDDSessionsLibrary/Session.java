@@ -29,6 +29,7 @@ public class Session {
         parseFiles(eventFile, phaseFile);
     }
 
+    // returns the number of cycles within this session
     public int size() {
         return cycles.size();
     }

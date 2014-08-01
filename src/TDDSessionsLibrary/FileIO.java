@@ -12,8 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,10 +27,10 @@ public class FileIO {
      *
      * The filePath parameter must be relative to the runtime directory of the TDDSessionsLibrary.
      *
-     * @param filePath      a relative path to the destination input file (e.g. /local/usr/data.in)
-     * @return contentsList a newline-delineated collection (ArrayList object) of text lines read from file
+     * @param filePath  a relative path to the destination input file (e.g. /local/usr/data.in)
+     * @return  contentsList a newline-delineated collection (ArrayList object) of text lines read from file
      */
-    static List<String> readFromFile(String filePath) {
+    public static List<String> readFromFile(String filePath) {
         Path path = Paths.get(filePath);
 
         List<String> lines = new ArrayList<>();
@@ -57,10 +56,10 @@ public class FileIO {
      * within the TDDSessionsLibrary. This method does not operate asynchronously, therefore it can
      * result in a blocked state if the to-be-written content is too large.
      *
-     * @param filePath      a relative path to the destination output file (e.g. /local/usr/data.out)
-     * @param content  a newline-delineated collection of text lines to be written to file
+     * @param filePath  a relative path to the destination output file (e.g. /local/usr/data.out)
+     * @param content   a newline-delineated collection of text lines to be written to file
      */
-    static void writeToFile(String filePath, String content) {
+    public static void writeToFile(String filePath, String content) {
         Path path = Paths.get(filePath);
 
         try (BufferedWriter writer = Files.newBufferedWriter(path, Charset.defaultCharset(), StandardOpenOption.APPEND)) {
@@ -77,10 +76,10 @@ public class FileIO {
      * org.json.JSONObject instance that can be used to access and iterate all JSON elements from files or streams.
      *
      * @param jsonString    a java.lang.String object containing newline delineated text to be converted
-     * @return jObj         a org.json.JSONObject that contains all JSON-compatible elements from the
-     *                      parameter java.lang.String object
+     * @return jObj     a org.json.JSONObject that contains all JSON-compatible elements from the
+     *                  parameter java.lang.String object
      */
-    static JSONObject parseJSONString(String jsonString) {
+    public static JSONObject parseJSONString(String jsonString) {
         JSONParser parser = new JSONParser();
         JSONObject jObj = null;
 
@@ -110,7 +109,7 @@ public class FileIO {
      * @return contentStr   a java.lang.String object containing newline delineated text from parameter
      *                      java.util.List object
      */
-    static String arrayToString(List<String> contentArray) {
+    public static String arrayToString(List<String> contentArray) {
         StringBuilder sb = new StringBuilder();
 
         for (String s : contentArray) {

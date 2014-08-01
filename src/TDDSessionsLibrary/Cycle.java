@@ -43,6 +43,21 @@ public class Cycle {
         return phases.get(phases.size()-1).end;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (!this.getClass().equals(obj.getClass())) {
+            return false;
+        }
+        Cycle c = (Cycle) obj;
+        if (!this.events.equals(c.events)) {
+            return false;
+        }
+        if (!this.phases.equals(c.phases)) {
+            return false;
+        }
+        return true;
+    }
+
     public int eventSize() {
         return events.size();
     }

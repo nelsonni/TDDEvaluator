@@ -2,40 +2,51 @@ package TDDSessionsLibrary;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class PhaseTest {
 
     @Test
     public void testParameterConstructor() throws Exception {
         System.out.println("PhaseTest::testParameterConstructor...");
-        Phase phase = new Phase("red", 12, 20);
-
-        assertEquals("red", phase.type);
-        assertEquals(12, phase.start);
-        assertEquals(20, phase.end);
+        Phase p = new Phase("red", 12, 20);
+        assertEquals("red", p.type);
+        assertEquals(12, p.start);
+        assertEquals(20, p.end);
     }
 
     @Test
     public void testGoodJSONStringConstructor() throws Exception {
         System.out.println("PhaseTest::testGoodJSONStringConstructor...");
-        String json = "{\"CycleType\":\"blue\",\"CycleStart\":\"24\",\"CycleEnd\":\"32\"}";
-        Phase phase = new Phase(json);
-
-        assertEquals("blue", phase.type);
-        assertEquals(24, phase.start);
-        assertEquals(32, phase.end);
+        Phase p = new Phase("{\"CycleType\":\"blue\",\"CycleStart\":\"24\",\"CycleEnd\":\"32\"}");
+        assertEquals("blue", p.type);
+        assertEquals(24, p.start);
+        assertEquals(32, p.end);
     }
 
     @Test
     public void testBadJSONStringConstructor() throws Exception {
         System.out.println("PhaseTest::testBadJSONStringConstructor...");
-        String json = "{\"timestamp\":\"1400549108894\",\"text\":\"example\",\"changeOrigin\":\"user\"}";
-        Phase phase = new Phase(json);
+        Phase p = new Phase("{\"timestamp\":\"1400549108894\",\"text\":\"example\",\"changeOrigin\":\"user\"}");
+        assertEquals("error", p.type);
+        assertEquals(-1, p.start);
+        assertEquals(-1, p.end);
+    }
 
-        assertEquals("error", phase.type);
-        assertEquals(-1, phase.start);
-        assertEquals(-1, phase.end);
+    @Test
+    public void testEqualsTrue() throws Exception {
+        System.out.println("PhaseTest::testEqualsTrue...");
+        Phase p1 = new Phase("{\"CycleType\":\"blue\",\"CycleStart\":\"24\",\"CycleEnd\":\"32\"}");
+        Phase p2 = new Phase("{\"CycleType\":\"blue\",\"CycleStart\":\"24\",\"CycleEnd\":\"32\"}");
+        assertTrue(p1.equals(p2));
+    }
+
+    @Test
+    public void testEqualsFalse() throws Exception {
+        System.out.println("PhaseTest::testEqualsFalse...");
+        Phase p1 = new Phase("{\"CycleType\":\"blue\",\"CycleStart\":\"24\",\"CycleEnd\":\"32\"}");
+        Phase p2 = new Phase("{\"CycleType\":\"blue\",\"CycleStart\":\"19\",\"CycleEnd\":\"28\"}");
+        assertFalse(p1.equals(p2));
     }
 
 }

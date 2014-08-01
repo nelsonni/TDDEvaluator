@@ -40,4 +40,22 @@ public class Phase {
         return String.format("{\"CycleType\":\"%s\",\"CycleStart\":\"%d\",\"CycleEnd\":\"%d\"}", type, start, end);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (!this.getClass().equals(obj.getClass())) {
+            return false;
+        }
+        Phase p = (Phase) obj;
+        if (!this.type.equals(p.type)) {
+            return false;
+        }
+        if (this.start != p.start) {
+            return false;
+        }
+        if (this.end != p.end) {
+            return false;
+        }
+        return true;
+    }
+
 }

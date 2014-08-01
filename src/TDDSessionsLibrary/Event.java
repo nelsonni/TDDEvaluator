@@ -25,10 +25,17 @@ public class Event {
         return operationEvent.size();
     }
 
+    @Override
     public String toString() {
         return operationEvent.toString();
     }
 
-
-
+    @Override
+    public boolean equals(Object obj) {
+        if (!this.getClass().equals(obj.getClass())) {
+            return false;
+        }
+        Event e = (Event) obj;
+        return this.operationEvent.equals(e.operationEvent);
+    }
 }
