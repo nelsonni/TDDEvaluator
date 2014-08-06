@@ -9,26 +9,31 @@ import java.util.List;
  */
 public class Cycle {
 
-    private List<Event> events;
-    private List<Phase> phases;
+    protected List<Phase> phases;
 
     public Cycle () {
-        events = new ArrayList<>();
         phases = new ArrayList<>();
     }
 
-    public Cycle(List<Event> allEvents, List<Phase> allPhases) {
-        events = new ArrayList<>();
+    public Cycle(Phase first, Phase second) {
         phases = new ArrayList<>();
-
-        if (!allEvents.isEmpty()) {
-            events.addAll(allEvents);
-        }
-        if (!allPhases.isEmpty()) {
-            phases.addAll(allPhases);
-        }
+        phases.add(first);
+        phases.add(second);
     }
 
+    public Cycle(Phase first, Phase second, Phase third) {
+        phases = new ArrayList<>();
+        phases.add(first);
+        phases.add(second);
+        phases.add(third);
+    }
+
+    /***
+     * Returns the positional offset value (order number) of the first event that the first phase within this cycle
+     * refer to as the starting event of that phase.
+     *
+     * @return  the lowest index value of the Event objects referenced by Phase objects contained within this Cycle.
+     */
     public int start() {
         if (phases.isEmpty()) {
             return 0;
@@ -49,55 +54,23 @@ public class Cycle {
             return false;
         }
         Cycle c = (Cycle) obj;
-        if (!this.events.equals(c.events)) {
-            return false;
-        }
-        if (!this.phases.equals(c.phases)) {
-            return false;
-        }
-        return true;
+        return this.phases.equals(c.phases);
     }
 
-    public int eventSize() {
-        return events.size();
-    }
-
-    public int phaseSize() {
+    public int size() {
         return phases.size();
     }
 
-    public boolean addEvent(Event event) {
-        return events.add(event);
-    }
-
-    public boolean addEvent(String jsonString) {
-        return events.add(new Event(jsonString));
-    }
-
-    public boolean addPhase(Phase phase) {
-        return phases.add(phase);
-    }
-
-    public boolean addPhase(String jsonString) {
-        return phases.add(new Phase(jsonString));
-    }
-
-    public Event getEvent(int index) {
-        return events.get(index);
-    }
-
-    public Phase getPhase(int index) {
+    public Phase get(int index) {
         return phases.get(index);
     }
 
-    protected static List<Event> parseEventList(List<String> eventFileContent) {
-        List<Event> eventsList = new ArrayList<>();
+    public boolean add(Phase phase) {
+        return phases.add(phase);
+    }
 
-        for (String contentLine : eventFileContent) {
-            eventsList.add(new Event(contentLine));
-        }
-
-        return eventsList;
+    public boolean add(String jsonString) {
+        return phases.add(new Phase(jsonString));
     }
 
     protected static List<Phase> parsePhaseList(List<String> phaseFileContent) {

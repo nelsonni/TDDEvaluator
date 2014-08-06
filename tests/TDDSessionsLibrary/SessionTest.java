@@ -1,6 +1,5 @@
 package TDDSessionsLibrary;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -14,28 +13,18 @@ import static org.junit.Assert.*;
 
 public class SessionTest {
 
-    List<Event> events;
-    List<Phase> phases;
-    final String oneEvent = "{\"timestamp\":\"1400549108894\",\"text\":\"example\",\"changeOrigin\":\"user\"}";
-    final String onePhase = "{\"CycleType\":\"red\",\"CycleStart\":\"0\",\"CycleEnd\":\"0\"}";
-
-    @Before
-    public void setUp() throws Exception {
-        events = new ArrayList<>();
-        phases = new ArrayList<>();
-    }
-
     @Test
     public void testConstructors() throws Exception {
-        System.out.println("SessionTest::testConstructors...");
         Path eventTemp = getEmptyTempFile();
         Path phaseTemp = getEmptyTempFile();
 
         try {
             Session s1 = new Session();
             Session s2 = new Session(eventTemp.toString(), phaseTemp.toString());
-            assertTrue(s1.size() >= 0);
-            assertTrue(s2.size() >= 0);
+            assertTrue(s1.numCycles() >= 0);
+            assertTrue(s1.numEvents() >= 0);
+            assertTrue(s2.numCycles() >= 0);
+            assertTrue(s2.numEvents() >= 0);
         }
         catch (IllegalArgumentException e) {
             fail();
@@ -43,44 +32,75 @@ public class SessionTest {
     }
 
     @Test
-    public void testSize() throws Exception {
-        System.out.println("SessionTest::testSize...");
-        Session s1 = new Session();
-        assertEquals(0, s1.size());
-
-        Path eventTemp = getTempFile(oneEvent);
-        Path phaseTemp = getTempFile(onePhase);
-        Session s2 = new Session(eventTemp.toString(), phaseTemp.toString());
-        assertEquals(1, s2.size());
+    public void testAddEvent() throws Exception {
+        Session s = new Session();
+        Event e = new Event("{\"timestamp\":\"1400549108894\",\"text\":\"example\",\"changeOrigin\":\"user\"}");
+        assertTrue(s.add(e));
     }
 
     @Test
     public void testAddCycle() throws Exception {
-        System.out.println("SessionTest::testAddCycle...");
-        events.add(new Event(oneEvent));
-        phases.add(new Phase(onePhase));
-
         Session s = new Session();
-        assertTrue(s.addCycle(events, phases));
+        Phase p1 = new Phase("{\"CycleType\":\"red\",\"CycleStart\":\"0\",\"CycleEnd\":\"10\"}");
+        Phase p2 = new Phase("{\"CycleType\":\"green\",\"CycleStart\":\"11\",\"CycleEnd\":\"20\"}");
+        Cycle c = new Cycle(p1, p2);
+        assertTrue(s.add(c));
+    }
+
+    @Test
+    public void testAddPhases() throws Exception {
+        Session s = new Session();
+        Phase p1 = new Phase("{\"CycleType\":\"red\",\"CycleStart\":\"0\",\"CycleEnd\":\"10\"}");
+        Phase p2 = new Phase("{\"CycleType\":\"green\",\"CycleStart\":\"11\",\"CycleEnd\":\"20\"}");
+        Phase p3 = new Phase("{\"CycleType\":\"blue\",\"CycleStart\":\"21\",\"CycleEnd\":\"35\"}");
+
+        assertTrue(s.add(p1, p2));
+        assertTrue(s.add(p1, p2, p3));
+    }
+
+    @Test
+    public void testNumEvents() throws Exception {
+        Session s = new Session();
+        assertEquals(0, s.numEvents());
+
+        s.add(new Event("{\"timestamp\":\"1400549108894\",\"text\":\"example\",\"changeOrigin\":\"user\"}"));
+        assertEquals(1, s.numEvents());
+    }
+
+    @Test
+    public void testNumCycles() throws Exception {
+        Session s = new Session();
+        assertEquals(0, s.numCycles());
+
+        Phase p1 = new Phase("{\"CycleType\":\"red\",\"CycleStart\":\"0\",\"CycleEnd\":\"10\"}");
+        Phase p2 = new Phase("{\"CycleType\":\"green\",\"CycleStart\":\"11\",\"CycleEnd\":\"20\"}");
+
+        s.add(p1, p2);
+        assertEquals(1, s.numCycles());
     }
 
     @Test
     public void testGetCycle() throws Exception {
-        System.out.println("SessionTest::testGetCycle...");
-        events.add(new Event(oneEvent));
-        phases.add(new Phase(onePhase));
-
-        Cycle c = new Cycle(events, phases);
         Session s = new Session();
+        Phase p1 = new Phase("{\"CycleType\":\"red\",\"CycleStart\":\"0\",\"CycleEnd\":\"10\"}");
+        Phase p2 = new Phase("{\"CycleType\":\"green\",\"CycleStart\":\"11\",\"CycleEnd\":\"20\"}");
+        Cycle c = new Cycle(p1, p2);
 
-        s.addCycle(events, phases);
-        assertEquals(c.eventSize(), s.getCycle(0).eventSize());
-        assertEquals(c.phaseSize(), s.getCycle(0).phaseSize());
+        s.add(c);
+        assertEquals(c, s.getCycle(0));
+    }
+
+    @Test
+    public void testGetEvent() throws Exception {
+        Session s = new Session();
+        Event e = new Event("{\"timestamp\":\"1400549108894\",\"text\":\"example\",\"changeOrigin\":\"user\"}");
+
+        s.add(e);
+        assertEquals(e, s.getEvent(0));
     }
 
     @Test
     public void testParseFiles() throws Exception {
-        System.out.println("SessionTest::testParseFiles...");
         Path eventTemp = getEmptyTempFile();
         Path phaseTemp = getEmptyTempFile();
 
@@ -113,7 +133,7 @@ public class SessionTest {
         // create new session and processing events and phases files into it
         Session s = new Session();
         s.parseFiles(eventTemp.toString(), phaseTemp.toString());
-        assertEquals(5, s.size());
+        assertEquals(5, s.numCycles());
     }
 
     // utility method; only used for constructing temporary files with content

@@ -1,6 +1,5 @@
 package TDDSessionsLibrary;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -10,29 +9,19 @@ import static org.junit.Assert.*;
 
 public class CycleTest {
 
-    List<Event> events;
-    List<Phase> phases;
-    final String jsonEvent = "{\"timestamp\":\"1400549108894\",\"text\":\"example\",\"changeOrigin\":\"user\"}";
-    final String jsonPhase = "{\"CycleType\":\"red\",\"CycleStart\":\"32\",\"CycleEnd\":\"41\"}";
-    Cycle c1;
-    Cycle c2;
-
-    @Before
-    public void setUp() throws Exception {
-        events = new ArrayList<>();
-        phases = new ArrayList<>();
-        c1 = new Cycle();
-        c2 = new Cycle(events, phases);
-    }
+    Phase p1 = new Phase("{\"CycleType\":\"red\",\"CycleStart\":\"0\",\"CycleEnd\":\"10\"}");
+    Phase p2 = new Phase("{\"CycleType\":\"green\",\"CycleStart\":\"11\",\"CycleEnd\":\"20\"}");
+    Phase p3 = new Phase("{\"CycleType\":\"blue\",\"CycleStart\":\"21\",\"CycleEnd\":\"30\"}");
 
     @Test
     public void testConstructors() throws Exception {
-        System.out.println("CycleTest::testConstructors...");
         try {
             Cycle c1 = new Cycle();
-            Cycle c2 = new Cycle(events, phases);
+            Cycle c2 = new Cycle(p1, p2);
+            Cycle c3 = new Cycle(p1, p2, p3);
             assertNotNull(c1);
             assertNotNull(c2);
+            assertNotNull(c3);
         }
         catch (IllegalArgumentException e) {
             fail();
@@ -41,114 +30,63 @@ public class CycleTest {
 
     @Test
     public void testEqualsTrue() throws Exception {
-        System.out.println("CycleTest::testEqualsTrue...");
-        Cycle c1 = new Cycle(events, phases);
-        Cycle c2 = new Cycle(events, phases);
-        assertTrue(c1.equals(c2));
+        Cycle c1 = new Cycle(p1, p2, p3);
+        Cycle c2 = new Cycle(p1, p2, p3);
+
+        assertEquals(c1, c2);
     }
 
     @Test
     public void testEqualsFalse() throws Exception {
-        System.out.println("CycleTest::testEqualsFalse...");
-        Cycle c1 = new Cycle(events, phases);
-        Cycle c2 = new Cycle(events, phases);
-        c2.addEvent(new Event("{\"timestamp\":\"1400549108894\",\"text\":\"some example\",\"changeOrigin\":\"user\"}"));
+        Cycle c1 = new Cycle(p1, p2, p3);
+        Cycle c2 = new Cycle(p1, p2);
+
         assertFalse(c1.equals(c2));
     }
 
     @Test
-    public void testAddEventObject() throws Exception {
-        System.out.println("CycleTest::testAddEventObject...");
-        Event e = new Event(jsonEvent);
-        assertTrue(c1.addEvent(e));
-        assertTrue(c2.addEvent(e));
+    public void testSize() throws Exception {
+        Cycle c1 = new Cycle();
+        Cycle c2 = new Cycle(p1, p2);
+        Cycle c3 = new Cycle(p1, p2, p3);
+
+        assertEquals(0, c1.size());
+        assertEquals(2, c2.size());
+        assertEquals(3, c3.size());
     }
 
     @Test
-    public void testAddEventString() throws Exception {
-        System.out.println("CycleTest::testAddEventString...");
-        assertTrue(c1.addEvent(jsonEvent));
-        assertTrue(c2.addEvent(jsonEvent));
+    public void testGet() throws Exception {
+        Cycle c = new Cycle(p1, p2, p3);
+
+        assertEquals(p1, c.get(0));
+        assertEquals(p2, c.get(1));
+        assertEquals(p3, c.get(2));
     }
 
     @Test
-    public void testAddPhaseObject() throws Exception {
-        System.out.println("CycleTest::testAddPhaseObject...");
-        Phase p = new Phase(jsonPhase);
-        assertTrue(c1.addPhase(p));
-        assertTrue(c2.addPhase(p));
+    public void testAddObject() throws Exception {
+        Cycle c = new Cycle();
+
+        assertTrue(c.add(p1));
+        assertEquals(p1, c.get(0));
     }
 
     @Test
-    public void testAddPhaseString() throws Exception {
-        System.out.println("CycleTest::testAddPhaseString...");
-        c1.addPhase(jsonPhase);
-        c2.addPhase(jsonPhase);
+    public void testAddString() throws Exception {
+        Cycle c = new Cycle();
 
-        assertEquals(jsonPhase, c1.getPhase(0).toString());
-        assertEquals(jsonPhase, c2.getPhase(0).toString());
-    }
+        assertTrue(c.add(p1.toString()));
+        assertEquals(p1.toString(), c.get(0).toString());
 
-    @Test
-    public void testEventSize() {
-        System.out.println("CycleTest::testEventSize...");
-        Event e = new Event(jsonEvent);
-        c1.addEvent(e);
-        c1.addEvent(e);
-
-        assertEquals(2, c1.eventSize());
-        assertEquals(0, c2.eventSize());
-    }
-
-    @Test
-    public void testPhaseSize() {
-        System.out.println("CycleTest::testPhaseSize...");
-        Phase p = new Phase(jsonPhase);
-        c1.addPhase(p);
-        c2.addPhase(p);
-
-        assertEquals(1, c1.phaseSize());
-        assertEquals(1, c2.phaseSize());
-    }
-
-    @Test
-    public void testGetEvent() throws Exception {
-        System.out.println("CycleTest::testGetEvent...");
-        Event e = new Event(jsonEvent);
-        c1.addEvent(e);
-        c2.addEvent(e);
-
-        assertEquals(e, c1.getEvent(0));
-        assertEquals(e, c2.getEvent(0));
-    }
-
-    @Test
-    public void testGetPhase() throws Exception {
-        System.out.println("CycleTest::testGetPhase...");
-        Phase p = new Phase(jsonPhase);
-        c1.addPhase(p);
-        c2.addPhase(p);
-
-        assertEquals(p, c1.getPhase(0));
-        assertEquals(p, c2.getPhase(0));
-    }
-
-    @Test
-    public void testParseEventList() throws Exception {
-        System.out.println("CycleTest::testParseEventList...");
-        List<String> events = new ArrayList<>();
-        events.add(jsonEvent);
-        events.add(jsonEvent);
-
-        assertEquals(2, Cycle.parseEventList(events).size());
     }
 
     @Test
     public void testParsePhasesList() throws Exception {
-        System.out.println("CycleTest::testParsePhasesList...");
-        List<String> phases = new ArrayList<>();
-        phases.add(jsonPhase);
+        List<String> phaseList = new ArrayList<>();
+        phaseList.add(p1.toString());
+        phaseList.add(p2.toString());
 
-        assertEquals(1, Cycle.parsePhaseList(phases).size());
+        assertEquals(2, Cycle.parsePhaseList(phaseList).size());
     }
 }

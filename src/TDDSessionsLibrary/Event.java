@@ -8,7 +8,7 @@ import org.json.simple.JSONObject;
  */
 public class Event {
 
-    private JSONObject operationEvent;
+    protected JSONObject operationEvent;
 
     public Event(String jsonString) {
         operationEvent = FileIO.parseJSONString(jsonString);

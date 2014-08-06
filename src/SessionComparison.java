@@ -1,4 +1,3 @@
-import TDDSessionsLibrary.Event;
 import TDDSessionsLibrary.Session;
 
 /**
@@ -15,18 +14,25 @@ public class SessionComparison {
         s2 = session2;
     }
 
-    public double getEventPercentage() {
-        Event e1 = s1.getCycle(0).getEvent(0);
-        Event e2 = s1.getCycle(0).getEvent(3);
+    public double eventPercentage() {
+        int correct = 0;
+        int incorrect = 0;
 
-        System.out.println("event 1:");
-        System.out.println(e1.toString());
-        System.out.println("event 2:");
-        System.out.println(e2.toString());
+        System.out.println("s1 session:");
 
-        System.out.println("comparison result: " + e1.equals(e2));
+        for (int i = 0; i < s1.numEvents(); i++) {
+            if (s1.getEvent(i).equals(s2.getEvent(i))) {
+                correct++;
+            }
+            else {
+                incorrect++;
+            }
+        }
 
-        return 0.00;
+        System.out.println("correct: " + correct + ", incorrect: " + incorrect);
+        double percentage = correct / (correct + incorrect);
+
+        return percentage;
     }
 
 }

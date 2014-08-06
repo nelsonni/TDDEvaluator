@@ -3,13 +3,11 @@ package TDDSessionsLibrary;
 import org.json.simple.JSONObject;
 import org.junit.Test;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -18,8 +16,7 @@ public class FileIOTest {
 
     @Test
     public void testReadFromFile() throws Exception {
-        System.out.println("FileIOTest::testReadFromFile...");
-        Path temp = getTempFile();
+        Path temp = getTempFile("begin\n23434213423453254324\nend");
 
         List<String> content = FileIO.readFromFile(temp.toString());
         String output = FileIO.arrayToString(content);
@@ -29,7 +26,6 @@ public class FileIOTest {
 
     @Test
     public void testWriteToFile() throws Exception {
-        System.out.println("FileIOTest::testWriteToFile...");
         Path temp = getEmptyTempFile();
         String writeContent = "begin\n23434213423453254324\nend";
 
@@ -43,7 +39,6 @@ public class FileIOTest {
 
     @Test
     public void testParseJSONString() throws Exception {
-        System.out.println("FileIOTest::testParseJSONString...");
         String json = "{\"timestamp\":\"1400549108894\",\"text\":\"example\",\"changeOrigin\":\"user\"}";
         JSONObject jObj = FileIO.parseJSONString(json);
 
@@ -54,7 +49,6 @@ public class FileIOTest {
 
     @Test
     public void testArrayToString() throws Exception {
-        System.out.println("FileIOTest::testArrayToString...");
         List<String> cycleLines = new ArrayList<>();
         cycleLines.add("[{\"CycleType\":\"red\",\"CycleEnd\":\"344\",\"id\":\"0344\",\"CycleStart\":\"0\"},");
         cycleLines.add("{\"CycleType\":\"green\",\"CycleEnd\":\"381\",\"id\":\"345381\",\"CycleStart\":\"345\"},");
@@ -88,20 +82,20 @@ public class FileIOTest {
         assertEquals(control, convertedCycleLines);
     }
 
-    private Path getTempFile() {
+    // utility method; only used for constructing temporary files with content
+    private Path getTempFile(String data) {
         Path temp = getEmptyTempFile();
+        List<String> content = Arrays.asList(data.split("\\r?\\n"));
 
-        try (BufferedWriter writer = Files.newBufferedWriter(temp, Charset.defaultCharset(), StandardOpenOption.APPEND)) {
-            writer.write("begin\n23434213423453254324\nend");
-            writer.close();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
+        for (String s : content) {
+            FileIO.writeToFile(temp.toString(), s);
+            FileIO.writeToFile(temp.toString(), "\n");
         }
 
         return temp;
     }
 
+    // utility method; only used for constructing empty temporary files
     private Path getEmptyTempFile() {
         Path temp = null;
 

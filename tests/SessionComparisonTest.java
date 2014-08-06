@@ -1,3 +1,4 @@
+import TDDSessionsLibrary.Event;
 import TDDSessionsLibrary.FileIO;
 import TDDSessionsLibrary.Session;
 import org.junit.Before;
@@ -61,9 +62,44 @@ public class SessionComparisonTest {
     public void testTotalCorrect() throws Exception {
         SessionComparison comparator = new SessionComparison(s1, s2);
 
-        comparator.getEventPercentage();
+        System.out.println(comparator.eventPercentage());
+
+        s2.add(new Event("{\"timestamp\":\"1902249319894\",\"text\":\"different\",\"changeOrigin\":\"system\"}"));
+
+        System.out.println(comparator.eventPercentage());
+
+        // Because it is not a s1==s2 and s2==s1 comparison, this is passing right now.
+        // To fix this issue, an equal() method needs to be implemented for Session objects.
+
+        /*
+
+        Cycle c1 = s2.getCycle(s2.size()-2);
+        System.out.println("session: s2, cycle: 2nd to last");
+        System.out.println("\tstart: " + c1.start() + ", end: " + c1.end());
+        System.out.println("\teventSize: " + c1.eventSize() + ", phaseSize: " + c1.phaseSize());
+
+        Event e1 = c1.getEvent(c1.eventSize()-1);
+        System.out.println("session: s2, cycle: 2nd to last, event: last");
+        System.out.println(e1.toString());
+        System.out.println();
+
+        s2.getCycle(s2.size()-2).addEvent("{\"timestamp\":\"1400549106694\",\"text\":\"other\",\"changeOrigin\":\"sys\"},");
+
+        Cycle c2 = s2.getCycle(s2.size()-2);
+        System.out.println("session: s2, cycle: 2nd to last");
+        System.out.println("\tstart: " + c2.start() + ", end: " + c2.end());
+        System.out.println("\teventSize: " + c2.eventSize() + ", phaseSize: " + c2.phaseSize());
+
+        Event e2 = c2.getEvent(c2.eventSize()-1);
+        System.out.println("session: s2, cycle: 2nd to last, event: last");
+        System.out.println(e2.toString());
+
+        SessionComparison comparator = new SessionComparison(s1, s2);
+
+        System.out.println("events percentage: " + comparator.eventPercentage());
 
         //assertEquals(100.00, comparator.totalCorrect());
+        */
     }
 
     // utility method; only used for constructing empty temporary files
