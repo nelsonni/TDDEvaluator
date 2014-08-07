@@ -14,31 +14,26 @@ public class Session {
     public String eventFilename;
     public String phaseFilename;
     private List<Cycle> cycles;
-    private List<Event> timelineJSON;
-    private List<Event> timelineAST;
+    private List<Event> timeline;
 
     public Session() {
         eventFilename = null;
         phaseFilename = null;
         cycles = new ArrayList<>();
-        timelineJSON = new ArrayList<>();
-        timelineAST = new ArrayList<>();
+        timeline = new ArrayList<>();
     }
 
     public Session(String eventFilePath, String phaseFilePath) {
-        this(); // run default constructor first
+        eventFilename = eventFilePath;
+        phaseFilename = phaseFilePath;
+        cycles = new ArrayList<>();
+        timeline = new ArrayList<>();
+
         parseFiles(eventFilename, phaseFilename);
     }
 
-    public boolean add(Event event, String type) {
-        switch (type) {
-            case "JSON":
-                return timelineJSON.add(event);
-            case "AST":
-                return timelineAST.add(event);
-            default:
-                return false;
-        }
+    public boolean add(Event event) {
+        return timeline.add(event);
     }
 
     public boolean add(Cycle cycle) {
@@ -54,24 +49,17 @@ public class Session {
     }
 
     public boolean addAll(List<Event> events) {
-        return timelineJSON.addAll(events);
+        return timeline.addAll(events);
     }
 
     /***
-     * Returns the number of Event elements in the list specified by type parameter. If this list contains more than
-     * Interger.MAX_VALUE elements, returns Integer.MAX_VALUE. If no list with the specified type exists, returns -1.
+     * Returns the number of Event elements in the timeline list. If this list contains more than
+     * Interger.MAX_VALUE elements, returns Integer.MAX_VALUE.
      *
-     * @return size     the number of Event elements in the timelineJSON list
+     * @return size     the number of Event elements in the timeline list
      */
-    public int numEvents(String type) {
-        switch (type) {
-            case "JSON":
-                return timelineJSON.size();
-            case "AST":
-                return timelineAST.size();
-            default:
-                return -1;
-        }
+    public int numEvents() {
+        return timeline.size();
     }
 
     /***
@@ -96,55 +84,18 @@ public class Session {
     }
 
     /***
-     * Returns the Event object at the specified position in the specified type list.
+     * Returns the Event object at the specified position in the timeline list.
      *
      * @param index     index of the Event element to return
-     * @param type      type of list to return Event element from (JSON, AST)
-     * @return          the Event element at the specified position in the type list
-     * @throws IndexOutOfBoundsException
+     * @return          the Event element at the specified position in the list
+     * @throws IndexOutOfBoundsException    if the index is out of range (index < 0 || index >= size())
      */
-    public Event getEvent(int index, String type) throws IndexOutOfBoundsException {
-        switch (type) {
-            case "JSON":
-                return timelineJSON.get(index);
-            case "AST":
-                return timelineAST.get(index);
-            default:
-                return null;
-        }
+    public Event getEvent(int index) throws IndexOutOfBoundsException {
+        return timeline.get(index);
     }
 
-    /***
-     * Returns a subset List containing all Event objects from the start position to the end position
-     * within the specified type list.
-     *
-     * @param start     index of the starting Event element to return
-     * @param end       index of the ending Event element to return
-     * @param type      type of list to return Event elements from (JSON or AST)
-     * @return          a list of Event elements from the specified interval positions within the type list
-     * @throws IndexOutOfBoundsException
-     */
-    public List<Event> getEventsList(int start, int end, String type) throws IndexOutOfBoundsException {
-        List<Event> subset = new ArrayList<>();
-        if (start <= end) {
-            return null;
-        }
 
-        for (int i = start; i < end; i++) {
-            switch (type) {
-                case "JSON":
-                    subset.add(timelineJSON.get(i));
-                    break;
-                case "AST":
-                    subset.add(timelineAST.get(i));
-                    break;
-                default:
-                    return null;
-            }
-        }
 
-        return subset;
-    }
 
     public void parseFiles(String eventFilePath, String phaseFilePath) {
 
@@ -159,21 +110,11 @@ public class Session {
         // step 3: delineate cycles from phases, add to the cycles in this class
         processCycles(phasesList);
 
-        // step 4: add events to the timelineJSON in this class
-        timelineJSON.addAll(eventsList);
+        // step 4: add events to the timeline in this class
+        timeline.addAll(eventsList);
 
-        // step 5: verify that all events referenced by cycles/phases are in the timelineJSON of this class
+        // step 5: verify that all events referenced by cycles/phases are in the timeline of this class
         validateTimeline();
-    }
-
-    protected static List<Event> parseEventList(List<String> eventFileContent) {
-        List<Event> eventsList = new ArrayList<>();
-
-        for (String contentLine : eventFileContent) {
-            eventsList.add(new Event(contentLine));
-        }
-
-        return eventsList;
     }
 
     private void processCycles(List<Phase> phasesList) {
@@ -217,14 +158,22 @@ public class Session {
     private void validateTimeline() {
         for (Cycle c : cycles) {
             for (Phase p : c.phases) {
-                if (p.start >= timelineJSON.size() || p.end >= timelineJSON.size()) {
+                if (p.start >= timeline.size() || p.end >= timeline.size()) {
                     // TODO Finish this code if it is necessary functionality, re-evaluation of purpose is required
                 }
             }
         }
     }
 
+    protected static List<Event> parseEventList(List<String> eventFileContent) {
+        List<Event> eventsList = new ArrayList<>();
 
+        for (String contentLine : eventFileContent) {
+            eventsList.add(new Event(contentLine));
+        }
+
+        return eventsList;
+    }
 
 /*
     private void processEvents(List<Event> eventsList) {
