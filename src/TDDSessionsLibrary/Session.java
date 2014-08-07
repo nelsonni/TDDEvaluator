@@ -15,25 +15,27 @@ public class Session {
     public String phaseFilename;
     private List<Cycle> cycles;
     private List<Event> timeline;
+    private List<Event> ASTevents;
 
     public Session() {
         eventFilename = null;
         phaseFilename = null;
         cycles = new ArrayList<>();
         timeline = new ArrayList<>();
+        ASTevents = new ArrayList<>();
     }
 
     public Session(String eventFilePath, String phaseFilePath) {
-        eventFilename = eventFilePath;
-        phaseFilename = phaseFilePath;
-        cycles = new ArrayList<>();
-        timeline = new ArrayList<>();
-
+        this(); // call to default constructor first
         parseFiles(eventFilename, phaseFilename);
     }
 
     public boolean add(Event event) {
         return timeline.add(event);
+    }
+
+    public boolean addAST(Event event) {
+        return ASTevents.add(event);
     }
 
     public boolean add(Cycle cycle) {
@@ -52,6 +54,10 @@ public class Session {
         return timeline.addAll(events);
     }
 
+    public boolean allAllAST(List<Event> events) {
+        return ASTevents.addAll(events);
+    }
+
     /***
      * Returns the number of Event elements in the timeline list. If this list contains more than
      * Interger.MAX_VALUE elements, returns Integer.MAX_VALUE.
@@ -60,6 +66,10 @@ public class Session {
      */
     public int numEvents() {
         return timeline.size();
+    }
+
+    public int numASTEvents() {
+        return ASTevents.size();
     }
 
     /***
@@ -94,7 +104,9 @@ public class Session {
         return timeline.get(index);
     }
 
-
+    public Event getASTEvent(int index) throws IndexOutOfBoundsException {
+        return ASTevents.get(index);
+    }
 
 
     public void parseFiles(String eventFilePath, String phaseFilePath) {
