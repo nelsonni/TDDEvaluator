@@ -27,7 +27,7 @@ public class Session {
 
     public Session(String eventFilePath, String phaseFilePath) {
         this(); // call to default constructor first
-        parseFiles(eventFilename, phaseFilename);
+        parseFiles(eventFilePath, phaseFilePath);
     }
 
     public boolean add(Event event) {

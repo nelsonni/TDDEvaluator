@@ -1,6 +1,4 @@
-import TDDSessionsLibrary.Event;
-import TDDSessionsLibrary.FileIO;
-import TDDSessionsLibrary.Session;
+import TDDSessionsLibrary.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,6 +8,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class SessionComparisonTest {
@@ -59,47 +58,46 @@ public class SessionComparisonTest {
     }
 
     @Test
-    public void testTotalCorrect() throws Exception {
+    public void testCompareEvents() throws Exception {
         SessionComparison comparator = new SessionComparison(s1, s2);
 
-        System.out.println(comparator.eventPercentage());
+        Double result = comparator.compareEvents();
+        assertEquals(0, result.compareTo(1.0000000000000000));
 
         s2.add(new Event("{\"timestamp\":\"1902249319894\",\"text\":\"different\",\"changeOrigin\":\"system\"}"));
 
-        System.out.println(comparator.eventPercentage());
+        result = comparator.compareEvents();
+        assertEquals(0, result.compareTo(0.9995007488766849));
+    }
 
-        // Because it is not a s1==s2 and s2==s1 comparison, this is passing right now.
-        // To fix this issue, an equal() method needs to be implemented for Session objects.
-
-        /*
-
-        Cycle c1 = s2.getCycle(s2.size()-2);
-        System.out.println("session: s2, cycle: 2nd to last");
-        System.out.println("\tstart: " + c1.start() + ", end: " + c1.end());
-        System.out.println("\teventSize: " + c1.eventSize() + ", phaseSize: " + c1.phaseSize());
-
-        Event e1 = c1.getEvent(c1.eventSize()-1);
-        System.out.println("session: s2, cycle: 2nd to last, event: last");
-        System.out.println(e1.toString());
-        System.out.println();
-
-        s2.getCycle(s2.size()-2).addEvent("{\"timestamp\":\"1400549106694\",\"text\":\"other\",\"changeOrigin\":\"sys\"},");
-
-        Cycle c2 = s2.getCycle(s2.size()-2);
-        System.out.println("session: s2, cycle: 2nd to last");
-        System.out.println("\tstart: " + c2.start() + ", end: " + c2.end());
-        System.out.println("\teventSize: " + c2.eventSize() + ", phaseSize: " + c2.phaseSize());
-
-        Event e2 = c2.getEvent(c2.eventSize()-1);
-        System.out.println("session: s2, cycle: 2nd to last, event: last");
-        System.out.println(e2.toString());
-
+    @Test
+    public void testCompareCycles() throws Exception {
         SessionComparison comparator = new SessionComparison(s1, s2);
 
-        System.out.println("events percentage: " + comparator.eventPercentage());
+        Double result = comparator.compareCycles();
+        assertEquals(0, result.compareTo(1.0000000000000000));
 
-        //assertEquals(100.00, comparator.totalCorrect());
-        */
+        Phase p1 = new Phase("{\"CycleType\":\"red\",\"CycleEnd\":\"1374\",\"id\":\"12821374\",\"CycleStart\":\"1282\"}");
+        Phase p2 = new Phase("{\"CycleType\":\"green\",\"CycleEnd\":\"1904\",\"id\":\"13751904\",\"CycleStart\":\"1375\"}");
+        s2.add(new Cycle(p1, p2));
+
+        result = comparator.compareCycles();
+        assertEquals(0, result.compareTo(0.8333333333333334));
+    }
+
+    @Test
+    public void testComparePhases() throws Exception {
+        SessionComparison comparator = new SessionComparison(s1, s2);
+
+        Double result = comparator.comparePhases();
+        assertEquals(0, result.compareTo(1.0000000000000000));
+
+        Phase p1 = new Phase("{\"CycleType\":\"red\",\"CycleEnd\":\"1374\",\"id\":\"12821374\",\"CycleStart\":\"1282\"}");
+        Phase p2 = new Phase("{\"CycleType\":\"green\",\"CycleEnd\":\"1904\",\"id\":\"13751904\",\"CycleStart\":\"1375\"}");
+        s2.add(new Cycle(p1, p2));
+
+        result = comparator.comparePhases();
+        assertEquals(0, result.compareTo(0.8666666666666667));
     }
 
     // utility method; only used for constructing empty temporary files
