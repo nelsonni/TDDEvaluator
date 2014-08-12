@@ -49,10 +49,10 @@ public class Phase {
         if (!this.type.equals(p.type)) {
             return false;
         }
-        if (this.start != p.start) {
+        else if (this.start != p.start) {
             return false;
         }
-        if (this.end != p.end) {
+        else if (this.end != p.end) {
             return false;
         }
         return true;

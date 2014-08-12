@@ -8,7 +8,6 @@ public class PhaseTest {
 
     @Test
     public void testParameterConstructor() throws Exception {
-        System.out.println("PhaseTest::testParameterConstructor...");
         Phase p = new Phase("red", 12, 20);
         assertEquals("red", p.type);
         assertEquals(12, p.start);
@@ -17,7 +16,6 @@ public class PhaseTest {
 
     @Test
     public void testGoodJSONStringConstructor() throws Exception {
-        System.out.println("PhaseTest::testGoodJSONStringConstructor...");
         Phase p = new Phase("{\"CycleType\":\"blue\",\"CycleStart\":\"24\",\"CycleEnd\":\"32\"}");
         assertEquals("blue", p.type);
         assertEquals(24, p.start);
@@ -26,7 +24,6 @@ public class PhaseTest {
 
     @Test
     public void testBadJSONStringConstructor() throws Exception {
-        System.out.println("PhaseTest::testBadJSONStringConstructor...");
         Phase p = new Phase("{\"timestamp\":\"1400549108894\",\"text\":\"example\",\"changeOrigin\":\"user\"}");
         assertEquals("error", p.type);
         assertEquals(-1, p.start);
@@ -35,7 +32,6 @@ public class PhaseTest {
 
     @Test
     public void testEqualsTrue() throws Exception {
-        System.out.println("PhaseTest::testEqualsTrue...");
         Phase p1 = new Phase("{\"CycleType\":\"blue\",\"CycleStart\":\"24\",\"CycleEnd\":\"32\"}");
         Phase p2 = new Phase("{\"CycleType\":\"blue\",\"CycleStart\":\"24\",\"CycleEnd\":\"32\"}");
         assertTrue(p1.equals(p2));
@@ -43,7 +39,6 @@ public class PhaseTest {
 
     @Test
     public void testEqualsFalse() throws Exception {
-        System.out.println("PhaseTest::testEqualsFalse...");
         Phase p1 = new Phase("{\"CycleType\":\"blue\",\"CycleStart\":\"24\",\"CycleEnd\":\"32\"}");
         Phase p2 = new Phase("{\"CycleType\":\"blue\",\"CycleStart\":\"19\",\"CycleEnd\":\"28\"}");
         assertFalse(p1.equals(p2));
