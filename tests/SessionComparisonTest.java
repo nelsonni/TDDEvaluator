@@ -58,15 +58,15 @@ public class SessionComparisonTest {
     }
 
     @Test
-    public void testCompareEvents() throws Exception {
+    public void testCompareTimelines() throws Exception {
         SessionComparison comparator = new SessionComparison(s1, s2);
 
-        Double result = comparator.compareEvents();
+        Double result = comparator.compareTimelines();
         assertEquals(0, result.compareTo(1.0000000000000000));
 
         s2.add(new Event("{\"timestamp\":\"1902249319894\",\"text\":\"different\",\"changeOrigin\":\"system\"}"));
 
-        result = comparator.compareEvents();
+        result = comparator.compareTimelines();
         assertEquals(0, result.compareTo(0.9995007488766849));
     }
 
@@ -92,6 +92,7 @@ public class SessionComparisonTest {
         Double result = comparator.comparePhases();
         assertEquals(0, result.compareTo(1.0000000000000000));
 
+        s1.add(new Cycle());
         Phase p1 = new Phase("{\"CycleType\":\"red\",\"CycleEnd\":\"1374\",\"id\":\"12821374\",\"CycleStart\":\"1282\"}");
         Phase p2 = new Phase("{\"CycleType\":\"green\",\"CycleEnd\":\"1904\",\"id\":\"13751904\",\"CycleStart\":\"1375\"}");
         s2.add(new Cycle(p1, p2));
@@ -106,7 +107,6 @@ public class SessionComparisonTest {
 
         try {
             temp = Files.createTempFile(null, ".tmp");
-            System.out.println("created temporary file: " + temp.toString());
         }
         catch (IOException e) {
             e.printStackTrace();

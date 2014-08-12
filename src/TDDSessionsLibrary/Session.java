@@ -126,7 +126,7 @@ public class Session {
         timeline.addAll(eventsList);
 
         // step 5: verify that all events referenced by cycles/phases are in the timeline of this class
-        validateTimeline();
+        validatePhases();
     }
 
     private void processCycles(List<Phase> phasesList) {
@@ -167,14 +167,20 @@ public class Session {
         }
     }
 
-    private void validateTimeline() {
+    protected int validatePhases() {
+        int validPhaseCount = 0;
+
         for (Cycle c : cycles) {
             for (Phase p : c.phases) {
+                validPhaseCount++;
                 if (p.start >= timeline.size() || p.end >= timeline.size()) {
-                    // TODO Finish this code if it is necessary functionality, re-evaluation of purpose is required
+                    System.out.println("Error: Phase start/stop references events not found in timeline");
+                    System.out.println(p.toString());
+                    validPhaseCount--;
                 }
             }
         }
+        return validPhaseCount;
     }
 
     protected static List<Event> parseEventList(List<String> eventFileContent) {

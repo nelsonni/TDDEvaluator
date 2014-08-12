@@ -136,6 +136,23 @@ public class SessionTest {
         assertEquals(5, s.numCycles());
     }
 
+    @Test
+    public void testValidatePhases() throws Exception {
+        Session s = new Session();
+
+        for (int i = 0; i < 20; i++) {
+            Event e = new Event("{\"timestamp\":\"1400549108894\",\"text\":\"example\",\"changeOrigin\":\"user\"}");
+            s.add(e);
+        }
+
+        Phase p1 = new Phase("{\"CycleType\":\"red\",\"CycleStart\":\"0\",\"CycleEnd\":\"10\"}");
+        Phase p2 = new Phase("{\"CycleType\":\"green\",\"CycleStart\":\"11\",\"CycleEnd\":\"25\"}");
+        Phase p3 = new Phase("{\"CycleType\":\"blue\",\"CycleStart\":\"26\",\"CycleEnd\":\"31\"}");
+        s.add(p1, p2, p3);
+
+        assertEquals(1, s.validatePhases());
+    }
+
     // utility method; only used for constructing temporary files with content
     private Path getTempFile(String data) {
         Path temp = getEmptyTempFile();

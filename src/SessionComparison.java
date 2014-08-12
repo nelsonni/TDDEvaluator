@@ -18,95 +18,116 @@ public class SessionComparison {
         df = new DecimalFormat("0.00%");
     }
 
-    public double compareEvents() {
-        int additions = Math.abs(s1.numEvents()-s2.numEvents());
-        int limit = (s1.numEvents() < s2.numEvents()) ? s1.numEvents() : s2.numEvents();
-        int correct = 0;
+    public double compareTimelines() {
+        int size = (s1.numEvents() > s2.numEvents()) ? s1.numEvents() : s2.numEvents();
+        int match = 0;
 
-        for (int i = 0; i < limit; i++) {
-            if (s1.getEvent(i).equals(s2.getEvent(i))) {
-                correct++;
+        for (int i = 0; i < size; i++) {
+            if (i >= s1.numEvents()) {
+                System.out.println("--EVENT MISMATCH (INDEX:" + i + ")--");
+                System.out.println("Session 1:\tNO EVENT");
+                System.out.println("Session 2:\t" + s2.getEvent(i).toString());
+            }
+            else if (i >= s2.numEvents()) {
+                System.out.println("--EVENT MISMATCH (INDEX:" + i + ")--");
+                System.out.println("Session 1:\t" + s1.getEvent(i).toString());
+                System.out.println("Session 2:\tNO EVENT");
+            }
+            else if (s1.getEvent(i).equals(s2.getEvent(i))) {
+                match++;
             }
             else {
-                System.out.println("--MISMATCH--");
-                System.out.println(s1.getEvent(i).toString());
-                System.out.println("  -vs-  ");
-                System.out.println(s2.getEvent(i).toString());
+                System.out.println("--EVENT MISMATCH (INDEX:" + i + ")--");
+                System.out.println("Session 1:\t" + s1.getEvent(i).toString());
+                System.out.println("Session 2:\t" + s2.getEvent(i).toString());
             }
         }
 
-        System.out.print(correct + " of " + (limit + additions) + " events (");
-        System.out.print(df.format((double) correct / (double) (limit + additions)));
+        System.out.print(match + " of " + size + " events (");
+        System.out.print(df.format((double) match / (double) size));
         System.out.println(") match");
+        System.out.println();
 
-        return (double) correct / (double) (limit + additions);
+        return (double) match / (double) size;
     }
 
     public double compareCycles() {
-        int additions = Math.abs(s1.numCycles() - s2.numCycles());
-        int limit = (s1.numCycles() < s2.numCycles()) ? s1.numCycles() : s2.numCycles();
-        int correct = 0;
+        int size = (s1.numCycles() > s2.numCycles()) ? s1.numCycles() : s2.numCycles();
+        int match = 0;
 
-        for (int i = 0; i < limit; i++) {
-            if (s1.getCycle(i).equals(s2.getCycle(i))) {
-                correct++;
+        for (int i = 0; i < size; i++) {
+            if (i >= s1.numCycles()) {
+                System.out.println("--CYCLE MISMATCH (INDEX:" + i + ")--");
+                System.out.println("Session 1:\tNO CYCLE");
+                System.out.println("Session 2:\t" + s2.getCycle(i).toString());
+            }
+            else if (i >= s2.numCycles()) {
+                System.out.println("--CYCLE MISMATCH (INDEX:" + i + ")--");
+                System.out.println("Session 1:\t" + s1.getCycle(i).toString());
+                System.out.println("Session 2:\tNO CYCLE");
+            }
+            else if (s1.getCycle(i).equals(s2.getCycle(i))) {
+                match++;
             }
             else {
-                System.out.println("--MISMATCH--");
-                System.out.println(s1.getCycle(i).toString());
-                System.out.println("  -vs-  ");
-                System.out.println(s2.getCycle(i).toString());
+                System.out.println("--CYCLE MISMATCH (INDEX:" + i + ")--");
+                System.out.println("Session 1:\t" + s1.getCycle(i).toString());
+                System.out.println("Session 2:\t" + s2.getCycle(i).toString());
             }
         }
 
-        System.out.print(correct + " of " + (limit + additions) + " cycles (");
-        System.out.print(df.format((double) correct / (double) (limit + additions)));
+        System.out.print(match + " of " + size + " cycles (");
+        System.out.print(df.format((double) match / (double) size));
         System.out.println(") match");
+        System.out.println();
 
-        return (double) correct / (double) (limit + additions);
+        return (double) match / (double) size;
     }
 
     public double comparePhases() {
-        int cAdditions = Math.abs(s1.numCycles() - s2.numCycles());
-        int cLimit = (s1.numCycles() < s2.numCycles()) ? s1.numCycles() : s2.numCycles();
-        int correct = 0;
-        int total = 0;
+        int cycleListSize = (s1.numCycles() > s2.numCycles()) ? s1.numCycles() : s2.numCycles();
+        int match = 0;
+        int size = 0;
 
-        for (int i = 0; i < cLimit; i++) {
-            int pAdditions = Math.abs(s1.getCycle(i).size() - s2.getCycle(i).size());
-            int pLimit = (s1.getCycle(i).size() < s2.getCycle(i).size()) ? s1.getCycle(i).size() : s2.getCycle(i).size();
+        for (int i = 0; i < cycleListSize; i++) {
+            if (i >= s1.numCycles()) {
+                System.out.println("--CYCLE MISMATCH (INDEX:" + i + ")--");
+                System.out.println("Session 1:\tNO CYCLE");
+                System.out.println("Session 2:\t" + s2.getCycle(i).toString());
+            }
+            else if (i >= s2.numCycles()) {
+                System.out.println("--CYCLE MISMATCH (INDEX:" + i + ")--");
+                System.out.println("Session 1:\t" + s1.getCycle(i).toString());
+                System.out.println("Session 2:\tNO CYCLE");
+            }
+            else {
+                int phaseListSize = (s1.getCycle(i).size() > s2.getCycle(i).size()) ? s1.getCycle(i).size() : s2.getCycle(i).size();
 
-            for (int j = 0; j < pLimit; j++) {
-                total++;
-                if (s1.getCycle(i).get(j).equals(s2.getCycle(i).get(j))) {
-                    correct++;
+                for (int j = 0; j < phaseListSize; j++) {
+                    size++;
+                    if (j >= s1.getCycle(i).size()) {
+                        System.out.println("--PHASE MISMATCH (CYCLE: " + i + ", INDEX: " + j +")--");
+                        System.out.println("Session 1:\tNO PHASE");
+                        System.out.println("Session 2:\t" + s2.getCycle(i).get(j).toString());
+                    }
+                    else if (j >= s2.getCycle(i).size()) {
+                        System.out.println("--PHASE MISMATCH (CYCLE: " + i + ", INDEX: " + j +")--");
+                        System.out.println("Session 1:\t" + s1.getCycle(i).get(j).toString());
+                        System.out.println("Session 2:\tNO PHASE");
+                    }
+                    else if (s1.getCycle(i).get(j).equals(s2.getCycle(i).get(j))) {
+                        match++;
+                    }
                 }
-                else {
-                    System.out.println("--MISMATCH--");
-                    System.out.println(s1.getCycle(i).get(j).toString());
-                    System.out.println("  -vs-  ");
-                    System.out.println(s2.getCycle(i).get(j).toString());
-                }
-            }
-            total += pAdditions;
-        }
-
-        if (s1.numCycles() < s2.numCycles()) {
-            for (int i = cLimit; i < (cLimit + cAdditions); i++) {
-                total += s2.getCycle(i).size();
-            }
-        }
-        else {
-            for (int i = cLimit; i < (cLimit + cAdditions); i++) {
-                total += s1.getCycle(i).size();
             }
         }
 
-        System.out.print(correct + " of " + (total) + " phases (");
-        System.out.print(df.format((double) correct / (double) total));
+        System.out.print(match + " of " + size + " phases (");
+        System.out.print(df.format((double) match / (double) size));
         System.out.println(") match");
+        System.out.println();
 
-        return (double) correct / (double) total;
+        return (double) match / (double) size;
     }
 
 }

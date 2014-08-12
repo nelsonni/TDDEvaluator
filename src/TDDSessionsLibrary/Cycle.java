@@ -57,6 +57,17 @@ public class Cycle {
         return this.phases.equals(c.phases);
     }
 
+    @Override
+    public String toString() {
+        StringBuilder cycleStr = new StringBuilder();
+
+        for (Phase p : phases) {
+            cycleStr.append(p.toString());
+        }
+
+        return cycleStr.toString();
+    }
+
     public int size() {
         return phases.size();
     }
